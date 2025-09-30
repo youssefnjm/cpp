@@ -1,20 +1,17 @@
-NAME=ex01
-
+NAME=ex03
 GPP=c++
-
 FLAGS=-Wall -Wextra -Werror -std=c++98
 
-SRC=phonebook.cpp contact.cpp main.cpp
-
+SRC=main.cpp Weapon.cpp HumanB.cpp HumanA.cpp
 OBJ=$(SRC:.cpp=.o)
 
-%.o: %.cpp phonebook.hpp contact.hpp
+%.o: %.cpp Weapon.hpp HumanB.hpp HumanA.hpp
 	$(GPP) $(FLAGS) -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(GPP) $(FLAGS) $(OBJ) -o ex01
+	$(GPP) $(FLAGS) $(OBJ) -o $(NAME)
 
 clean:
 	rm -f $(OBJ)

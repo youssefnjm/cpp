@@ -1,4 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   phonebook.cpp                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/27 15:37:34 by ynoujoum          #+#    #+#             */
+/*   Updated: 2025/09/27 15:37:35 by ynoujoum         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./phonebook.hpp"
+
+PhoneBook::PhoneBook() : current_pos(0), filled_contact(0) {}
+PhoneBook::~PhoneBook() {}
 
 int PhoneBook::is_all_digit(std::string str)
 {
@@ -70,28 +85,26 @@ std::string PhoneBook::ft_getline(std::string msg)
 
 	while (1)
 	{
-		std::cout << "\e[1m" << msg << "\e[0m";
+		std::cout << msg;
 		std::getline(std::cin, buffer, '\n');
 		if (std::cin.eof())
 			exit(1);
 		if (is_blank_or_unprintable(buffer))
 			break;
-		std::cout << "\033[31m" << "the input should not be blank or containe unprintable charachters" << "\033[0m" << std::endl;
+		std::cout << "the input should not be blank or containe unprintable charachters" << std::endl;
 	}
 	return (buffer);
 }
-
-
 
 void PhoneBook::add()
 {
 	current_pos = current_pos % 8;
 
-	contact[current_pos].fname = ft_getline("entre first name: ");
-	contact[current_pos].lname = ft_getline("entre last name: ");
-	contact[current_pos].nickname = ft_getline("entre nickname: ");
-	contact[current_pos].phone_number = telephone_parser("entre phone number: ");
-	contact[current_pos].secret = ft_getline("entre darkest secret: ");
+	contact[current_pos].setFirstName(ft_getline("entre first name: "));
+	contact[current_pos].setLastName(ft_getline("entre last name: "));
+	contact[current_pos].setNickname(ft_getline("entre nickname: "));
+	contact[current_pos].setPhoneNumber(telephone_parser("entre phone number: "));
+	contact[current_pos].setSecret(ft_getline("entre darkest secret: "));
 
 	current_pos++;
 	if (filled_contact < 8)
@@ -122,43 +135,25 @@ void PhoneBook::search()
 	print_col("LAST NAME");
 	print_col("NICKNAME");
 
-	std::cout << std::endl << std::string(44, '-') << std::endl; 
+	std::cout << std::endl << std::string(44, '-') << std::endl;
 
 	while (++i < filled_contact)
 	{
 		std::cout << "         " << i << "|";
-		print_col(contact[i].fname);
-		print_col(contact[i].lname);
-		print_col(contact[i].nickname);
+		print_col(contact[i].getFirstName());
+		print_col(contact[i].getLastName());
+		print_col(contact[i].getNickname());
 		std::cout << std::endl;
 	}
 
-	int index = index_parser("entry the index: ");
-
-	std::cout << "         " << index << "|";
-	print_col(contact[index].fname);
-	print_col(contact[index].lname);
-	print_col(contact[index].nickname);
-
-	std::cout << std::endl;
-}
-
-int main()
-{
-	std::string choice;
-	PhoneBook phonbook = PhoneBook();
-
-	while (1)
+	if (filled_contact != 0)
 	{
-		choice = phonbook.ft_getline("what action you want (ADD, SEARCH, EXIT): ");
-		if (choice == "ADD")
-			phonbook.add();
-		else if (choice == "SEARCH")
-			phonbook.search();
-		else if (choice == "EXIT")
-			return (0);
-		else
-			std::cout << "\033[31m" << "incorrect action" << "\033[0m" << std::endl;
+		int index = index_parser("entry the index: ");
+
+		std::cout << "first name: " << contact[index].getFirstName() << std::endl;
+		std::cout << "lastname: " << contact[index].getLastName() << std::endl;
+		std::cout << "nickname: " << contact[index].getNickname() << std::endl;
+		std::cout << "phone number: " << contact[index].getPhoneNumber() << std::endl;
+		std::cout << "secret: " << contact[index].getSecret() << std::endl;
 	}
-	return (0);
 }

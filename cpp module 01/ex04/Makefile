@@ -1,19 +1,22 @@
-GPP=g++
+NAME=ex04
+GPP=c++
 FLAGS=-Wall -Wextra -Werror -std=c++98
 
-SRC=Account.cpp
+SRC=main.cpp
 OBJ=$(SRC:.cpp=.o)
 
-%.o: %.cpp 
+%.o: %.cpp
 	$(GPP) $(FLAGS) -c $< -o $@
 
-all: $(OBJ)
-	$(GPP) $(FLAGS) $(OBJ) -o ex02
+all: $(NAME)
+
+$(NAME): $(OBJ)
+	$(GPP) $(FLAGS) $(OBJ) -o $(NAME)
 
 clean:
 	rm -f $(OBJ)
 
 fclean: clean
-	rm -f ex02
+	rm -f $(NAME)
 
 re: fclean all

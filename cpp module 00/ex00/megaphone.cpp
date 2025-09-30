@@ -11,12 +11,14 @@ int main(int ac, char **av)
 	}
 	while (i < ac)
 	{
-		int j = -1;
-		while (av[i][++j] != '\0')
-			av[i][j] = toupper(av[i][j]);
-		std::cout << av[i]; 
+		std::string str = av[i];
+		for (size_t j = 0; j < str.length(); j++)
+		{
+			str[j] = std::toupper(str[j]);
+		}
+		std::cout << str;
 		i++;
 	}
-	std::cout << std::endl; 
+	std::cout << std::endl;
 	return 0;
 }
