@@ -1,4 +1,4 @@
-NAME=ex02
+NAME=Account
 
 GPP=c++
 
