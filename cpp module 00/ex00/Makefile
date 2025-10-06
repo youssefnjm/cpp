@@ -1,3 +1,4 @@
+NAME=megaphone
 GPP=c++
 FLAGS=-Wall -Wextra -Werror -std=c++98
 
@@ -8,12 +9,12 @@ OBJ=$(SRC:.cpp=.o)
 	$(GPP) $(FLAGS) -c $< -o $@
 
 all: $(OBJ)
-	$(GPP) $(FLAGS) $(OBJ) -o ex00
+	$(GPP) $(FLAGS) $(OBJ) -o $(NAME)
 
 clean:
 	rm -f $(OBJ)
 
 fclean: clean
-	rm -f ex00
+	rm -f $(NAME)
 
 re: fclean all

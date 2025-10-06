@@ -6,16 +6,16 @@
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 15:37:34 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/09/27 15:37:35 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/06 10:19:54 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./phonebook.hpp"
+#include "./PhoneBook.hpp"
 
-PhoneBook::PhoneBook() : current_pos(0), filled_contact(0) {}
+PhoneBook::PhoneBook() : CurrentPos(0), FilledContact(0) {}
 PhoneBook::~PhoneBook() {}
 
-int PhoneBook::is_all_digit(std::string str)
+int PhoneBook::IsAllDigit(std::string str)
 {
 	int i = 0;
 
@@ -28,40 +28,40 @@ int PhoneBook::is_all_digit(std::string str)
 	return (1);
 }
 
-std::string PhoneBook::telephone_parser(std::string msg)
+std::string PhoneBook::TelephoneParser(std::string msg)
 {
-	std::string buffer;
+	std::string Buffer;
 
 	while (1)
 	{
-		buffer = ft_getline(msg);
-		if (is_all_digit(buffer))
+		Buffer = FtGetline(msg);
+		if (IsAllDigit(Buffer))
 			break ;
 		std::cout << "\033[31m" << "num should containe only numbers" << "\033[0m" << std::endl;
 	}
-	return (buffer);
+	return (Buffer);
 }
 
-int PhoneBook::index_parser(std::string msg)
+int PhoneBook::IndexParser(std::string msg)
 {
-	std::string buffer;
+	std::string Buffer;
 	int var = -1;
 
 	while (1)
 	{
-		buffer = ft_getline(msg);
-		if (is_all_digit(buffer))
+		Buffer = FtGetline(msg);
+		if (IsAllDigit(Buffer))
 		{
-			var = std::atoi(buffer.c_str());
-			if (var >= 0 && var < filled_contact)
+			var = std::atoi(Buffer.c_str());
+			if (var >= 0 && var < FilledContact)
 				break ;
 		}
-		std::cout << "\033[31m" << "index should containe only digit and between 0 and " << filled_contact << "\033[0m" << std::endl;
+		std::cout << "\033[31m" << "index should containe only digit and between 0 and " << FilledContact << "\033[0m" << std::endl;
 	}
 	return (var);
 }
 
-int PhoneBook::is_blank_or_unprintable(std::string buffer)
+int PhoneBook::IsBlankOrUnprintable(std::string buffer)
 {
 	int i = 0;
 	int res = 0;
@@ -79,81 +79,81 @@ int PhoneBook::is_blank_or_unprintable(std::string buffer)
 	return (res);
 }
 
-std::string PhoneBook::ft_getline(std::string msg)
+std::string PhoneBook::FtGetline(std::string msg)
 {
-	std::string buffer;
+	std::string Buffer;
 
 	while (1)
 	{
 		std::cout << msg;
-		std::getline(std::cin, buffer, '\n');
+		std::getline(std::cin, Buffer, '\n');
 		if (std::cin.eof())
 			exit(1);
-		if (is_blank_or_unprintable(buffer))
+		if (IsBlankOrUnprintable(Buffer))
 			break;
 		std::cout << "the input should not be blank or containe unprintable charachters" << std::endl;
 	}
-	return (buffer);
+	return (Buffer);
 }
 
-void PhoneBook::add()
+void PhoneBook::Add()
 {
-	current_pos = current_pos % 8;
+	CurrentPos = CurrentPos % 8;
 
-	contact[current_pos].setFirstName(ft_getline("entre first name: "));
-	contact[current_pos].setLastName(ft_getline("entre last name: "));
-	contact[current_pos].setNickname(ft_getline("entre nickname: "));
-	contact[current_pos].setPhoneNumber(telephone_parser("entre phone number: "));
-	contact[current_pos].setSecret(ft_getline("entre darkest secret: "));
+	Contact[CurrentPos].setFirstName(FtGetline("entre first name: "));
+	Contact[CurrentPos].setLastName(FtGetline("entre last name: "));
+	Contact[CurrentPos].setNickname(FtGetline("entre Nickname: "));
+	Contact[CurrentPos].setPhoneNumber(TelephoneParser("entre phone number: "));
+	Contact[CurrentPos].setSecret(FtGetline("entre darkest Secret: "));
 
-	current_pos++;
-	if (filled_contact < 8)
-		filled_contact++;
+	CurrentPos++;
+	if (FilledContact < 8)
+		FilledContact++;
 }
 
-void PhoneBook::print_col(std::string str)
+void PhoneBook::PrintCol(std::string str)
 {
-	std::string tmp;
-	int len;
+	std::string Tmp;
+	int Len;
 
-	len = str.length();
-	if (len > 10)
-		tmp = str.substr(0, 9) + ".";
+	Len = str.length();
+	if (Len > 10)
+		Tmp = str.substr(0, 9) + ".";
 	else
 	{
-		tmp = std::string(10 - len, ' ') + str;
+		Tmp = std::string(10 - Len, ' ') + str;
 	}
-	std::cout << tmp << "|";
+	std::cout << Tmp << "|";
 }
 
-void PhoneBook::search()
+void PhoneBook::Search()
 {
 	int i = -1;
 
-	print_col("INDEX");
-	print_col("FIRST NAME");
-	print_col("LAST NAME");
-	print_col("NICKNAME");
+	PrintCol("INDEX");
+	PrintCol("FIRST NAME");
+	PrintCol("LAST NAME");
+	PrintCol("Nickname");
 
 	std::cout << std::endl << std::string(44, '-') << std::endl;
 
-	while (++i < filled_contact)
+	while (++i < FilledContact)
 	{
 		std::cout << "         " << i << "|";
-		print_col(contact[i].getFirstName());
-		print_col(contact[i].getLastName());
-		print_col(contact[i].getNickname());
+		PrintCol(Contact[i].getFirstName());
+		PrintCol(Contact[i].getLastName());
+		PrintCol(Contact[i].getNickname());
 		std::cout << std::endl;
 	}
 
-	if (filled_contact != 0)
+	if (FilledContact != 0)
 	{
-		int index = index_parser("entry the index: ");
+		int Index = IndexParser("entry the index: ");
 
-		std::cout << "first name: " << contact[index].getFirstName() << std::endl;
-		std::cout << "lastname: " << contact[index].getLastName() << std::endl;
-		std::cout << "nickname: " << contact[index].getNickname() << std::endl;
-		std::cout << "phone number: " << contact[index].getPhoneNumber() << std::endl;
-		std::cout << "secret: " << contact[index].getSecret() << std::endl;
+		std::cout << "first name: " << Contact[Index].getFirstName() << std::endl;
+		std::cout << "lastname: " << Contact[Index].getLastName() << std::endl;
+		std::cout << "Nickname: " << Contact[Index].getNickname() << std::endl;
+		std::cout << "phone number: " << Contact[Index].getPhoneNumber() << std::endl;
+		std::cout << "Secret: " << Contact[Index].getSecret() << std::endl;
 	}
 }
