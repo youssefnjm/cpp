@@ -1,20 +1,17 @@
-NAME=Account
-
-CPP=c++
-
+NAME=a.out
+GPP=c++
 FLAGS=-Wall -Wextra -Werror -std=c++98
 
-SRC=tests.cpp Account.cpp
-
+SRC=main.cpp Fixed.cpp 
 OBJ=$(SRC:.cpp=.o)
 
-%.o: %.cpp Account.hpp
-	$(CPP) $(FLAGS) -c $< -o $@
+%.o: %.cpp Fixed.hpp
+	$(GPP) $(FLAGS) -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CPP) $(FLAGS) $(OBJ) -o $(NAME)
+	$(GPP) $(FLAGS) $(OBJ) -o $(NAME)
 
 clean:
 	rm -f $(OBJ)

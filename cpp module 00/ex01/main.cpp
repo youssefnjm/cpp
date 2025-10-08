@@ -6,7 +6,7 @@
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 15:36:55 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/06 10:15:56 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/08 12:35:07 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ int main()
 		else if (Choice == "SEARCH")
 			PhoneBook.Search();
 		else if (Choice == "EXIT")
-			return (0);
-		else
-			std::cout << "\033[31m" << "incorrect action" << "\033[0m" << std::endl;
+			break ;
 	}
 	return (0);
 }

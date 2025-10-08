@@ -1,20 +1,20 @@
-NAME=PhoneBook
+NAME=PhoneBook 
 
-GPP=c++
+CPP=c++ 
 
-FLAGS=-Wall -Wextra -Werror -std=c++98
+FLAGS=-Wall -Wextra -Werror -std=c++98 
 
 SRC=PhoneBook.cpp Contact.cpp main.cpp
 
-OBJ=$(SRC:.cpp=.o)
+OBJ=$(SRC:.cpp=.o) 
 
-%.o: %.cpp PhoneBook.hpp Contact.hpp
-	$(GPP) $(FLAGS) -c $< -o $@
+%.o: %.cpp PhoneBook.hpp Contact.hpp 
+	$(CPP) $(FLAGS) -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(GPP) $(FLAGS) $(OBJ) -o $(NAME)
+	$(CPP) $(FLAGS) $(OBJ) -o $(NAME)
 
 clean:
 	rm -f $(OBJ)

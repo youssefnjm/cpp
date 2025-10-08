@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   phonebook.hpp                                      :+:      :+:    :+:   */
+/*   PhoneBook.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 15:37:38 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/06 10:14:28 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/08 12:38:08 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,11 @@ class PhoneBook{
 		void PrintCol(std::string str);
 		std::string TelephoneParser(std::string msg);
 		int IndexParser(std::string msg);
-		int IsAllDigit(std::string str);
-		int IsBlankOrUnprintable(std::string buffer);
+		int IsInt(std::string str, int flag);
+		int IsBlank(std::string buffer);
 
 
 	public:
-
 		std::string FtGetline(std::string msg);
 		void Add();
 		void Search();

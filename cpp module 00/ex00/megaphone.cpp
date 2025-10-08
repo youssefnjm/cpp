@@ -13,9 +13,7 @@ int main(int ac, char **av)
 	{
 		std::string str = av[i];
 		for (size_t j = 0; j < str.length(); j++)
-		{
 			str[j] = std::toupper(str[j]);
-		}
 		std::cout << str;
 		i++;
 	}

@@ -5,23 +5,23 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/29 00:25:01 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/06 22:22:08 by ynoujoum         ###   ########.fr       */
+/*   Created: 2025/10/06 11:47:01 by ynoujoum          #+#    #+#             */
+/*   Updated: 2025/10/07 16:07:56 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Zombie.hpp"
+#include "Fixed.hpp"
 
-void randomChump( std::string name );
-Zombie* newZombie( std::string name );
+int main( void ) {
+    Fixed a;
+    Fixed b( a );
+    Fixed c;
 
-int main()
-{
-    Zombie *z1;
-    
-    z1 = newZombie("zombie-1");
-    z1->announce();
-    randomChump("zombie-2");
-    delete z1;
-    return (0);
+    c = b;
+
+    std::cout << a.getRawBits() << std::endl;
+    std::cout << b.getRawBits() << std::endl;
+    std::cout << c.getRawBits() << std::endl;
+
+    return 0;
 }

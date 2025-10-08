@@ -6,7 +6,7 @@
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:31:30 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/07 16:51:43 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/07 18:24:58 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 class Fixed
 {
     private:
-        int integer;
+        int rawBits;
         static const int fractionalBits = 8;
     public:
         int getRawBits( void ) const;
@@ -29,10 +29,12 @@ class Fixed
 
         Fixed();
         Fixed(Fixed const &obj);
-        Fixed& operator=(const Fixed& other);
         Fixed(const int val);
         Fixed(float val);
         ~Fixed();
+
+        Fixed& operator=(const Fixed& other);
+        ostream &operator<<(std::ostream &out, const Fixed &fixed);
 
 };
 

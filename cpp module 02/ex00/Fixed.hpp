@@ -1,27 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Fixed.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/29 00:25:01 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/06 22:22:08 by ynoujoum         ###   ########.fr       */
+/*   Created: 2025/10/06 11:47:23 by ynoujoum          #+#    #+#             */
+/*   Updated: 2025/10/07 16:50:58 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Zombie.hpp"
+#ifndef FIXED_HPP
+#define FIXED_HPP
 
-void randomChump( std::string name );
-Zombie* newZombie( std::string name );
+#include <iostream>
 
-int main()
+class Fixed
 {
-    Zombie *z1;
-    
-    z1 = newZombie("zombie-1");
-    z1->announce();
-    randomChump("zombie-2");
-    delete z1;
-    return (0);
-}
+    private:
+        int integer;
+        static const int fractionalBits;
+    public:
+        int getRawBits( void ) const;
+        void setRawBits( int const raw );
+
+        Fixed();
+        Fixed(Fixed const &obj);
+        Fixed& operator=(const Fixed& other);
+        ~Fixed();
+
+};
+
+#endif

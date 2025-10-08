@@ -6,7 +6,7 @@
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 03:40:49 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/06 10:21:53 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/08 13:29:47 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ bool	Account::makeWithdrawal( int withdrawal ) {
     _totalNbWithdrawals = getNbWithdrawals() +  1;
     
     _displayTimestamp();
-    std::cout << "index:" << _accountIndex << ";p_amount:" << LastAmount << ";withdrawal:" << withdrawal << ";amount" << checkAmount() << ";nb_withdrawals:" << _nbWithdrawals << std::endl;
+    std::cout << "index:" << _accountIndex << ";p_amount:" << LastAmount << ";withdrawal:" << withdrawal << ";amount:" << checkAmount() << ";nb_withdrawals:" << _nbWithdrawals << std::endl;
     return (0);
 };
 
@@ -99,5 +99,5 @@ int		Account::checkAmount( void ) const { return _amount; };
 
 void	Account::displayStatus( void ) const {
     _displayTimestamp();
-    std::cout << "index" <<_accountIndex << ";amount:" << checkAmount() << ";deposits:" << _nbDeposits << ";withdrawals:" << _nbWithdrawals << std::endl;
+    std::cout << "index:" <<_accountIndex << ";amount:" << checkAmount() << ";deposits:" << _nbDeposits << ";withdrawals:" << _nbWithdrawals << std::endl;
 };
