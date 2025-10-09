@@ -1,4 +1,4 @@
-NAME=ex03
+NAME=violence
 GPP=c++
 FLAGS=-Wall -Wextra -Werror -std=c++98
 

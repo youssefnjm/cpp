@@ -6,7 +6,7 @@
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 05:43:23 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/06 22:22:08 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:17:27 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int main(int ac, char **av)
     std::ofstream outfile(replaceFile);
     if (!outfile.is_open()) {
         std::cerr << "Error: cannot open file for writing\n";
+        outfile.close();
         return 1;
     }
 
@@ -59,7 +60,7 @@ int main(int ac, char **av)
         outfile << res << std::endl;
     }
 
-    outfile.close();
     infile.close();
+    outfile.close();
     return (0);
 }

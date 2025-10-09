@@ -6,7 +6,7 @@
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 07:08:21 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/06 22:22:08 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:39:13 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int main()
 {
     Harl h;
-    h.complain("DEUG");
+    h.complain("DEBUG");
     h.complain("INFO");
     h.complain("WARNING");
     h.complain("ERROR");

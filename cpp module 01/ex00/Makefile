@@ -1,4 +1,4 @@
-NAME=ex00
+NAME=Brainz
 GPP=c++
 FLAGS=-Wall -Wextra -Werror -std=c++98
 

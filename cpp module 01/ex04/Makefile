@@ -1,4 +1,4 @@
-NAME=ex04
+NAME=sed
 GPP=c++
 FLAGS=-Wall -Wextra -Werror -std=c++98
 

@@ -1,4 +1,4 @@
-NAME=ex05
+NAME=harl
 GPP=c++
 FLAGS=-Wall -Wextra -Werror -std=c++98
 

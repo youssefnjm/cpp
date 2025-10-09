@@ -1,4 +1,4 @@
-NAME=ex06
+NAME=harlFilter
 GPP=c++
 FLAGS=-Wall -Wextra -Werror -std=c++98
 

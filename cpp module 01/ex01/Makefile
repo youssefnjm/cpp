@@ -1,4 +1,4 @@
-NAME=ex01
+NAME=moreBrainz
 GPP=c++
 FLAGS=-Wall -Wextra -Werror -std=c++98
 

@@ -6,7 +6,7 @@
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 00:19:07 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/06 11:37:33 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:58:05 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class Zombie
     public:
         void announce( void );
     
-        void setName(std::string name);
+        void setName(std::string newName);
         std::string getName( void ) const;
 
         Zombie();
