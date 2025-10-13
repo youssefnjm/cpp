@@ -6,7 +6,7 @@
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 05:43:23 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/09 17:17:27 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/09 21:43:33 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 int main(int ac, char **av)
 {
     if (ac != 4)
+    {
+        std::cerr << "Error: incorrect argumment number\n";
         return (1);
+    }
 
     std::string fileName = av[1];
     std::string s1 = av[2];
@@ -42,7 +45,7 @@ int main(int ac, char **av)
     }
 
     std::string line;
-    while (std::getline(infile, line)) {
+    while (std::getline(infile, line, '\0')) {
         std::string res;
         size_t pos = 0;
         size_t start = 0;
@@ -57,7 +60,7 @@ int main(int ac, char **av)
             start = pos + s1.length();
         }
         res = res + line.substr(start);
-        outfile << res << std::endl;
+        outfile << res;
     }
 
     infile.close();

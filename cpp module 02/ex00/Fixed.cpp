@@ -6,7 +6,7 @@
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 11:47:14 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/07 16:52:00 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/12 17:08:11 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ Fixed& Fixed::operator=(const Fixed& other) {
     }
     return *this;
 };
-    
+
 Fixed::~Fixed() {
     std::cout << "Destructor called" << std::endl;
 };
