@@ -6,16 +6,14 @@
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 11:47:14 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/12 17:08:11 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/15 06:49:16 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
 
-// const int fractionalBits = 8;
-
 int Fixed::getRawBits( void ) const { 
-    std::cout << "getRawBits member function callsed" << std::endl;
+    std::cout << "getRawBits member function called" << std::endl;
     return integer; 
 };
 
@@ -33,7 +31,7 @@ Fixed::Fixed(Fixed const &obj){
     setRawBits(obj.getRawBits());
 };
 
-Fixed& Fixed::operator=(const Fixed& other) {
+Fixed& Fixed::operator = (const Fixed& other) {
     std::cout << "Copy assignment operator called" << std::endl;
     if (this != &other) {
         setRawBits(other.getRawBits());

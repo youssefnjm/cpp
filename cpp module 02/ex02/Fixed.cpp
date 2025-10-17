@@ -6,13 +6,13 @@
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:31:48 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/13 16:35:19 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/15 08:11:44 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
 
-const int fractionalBits = 8;
+const int Fixed::fractionalBits = 8;
 
 int Fixed::getRawBits( void ) const { 
     return rawBits;
@@ -42,16 +42,16 @@ Fixed::Fixed(Fixed const &obj) {
     
 Fixed::~Fixed() {};
 
-Fixed& Fixed::operator=(const Fixed& other) {
+Fixed& Fixed::operator = (const Fixed& other) {
     if (this != &other) {
         setRawBits(other.getRawBits());
     }
     return *this;
 };
 
-std::ostream &operator<<(std::ostream &out, const Fixed &fixed) {
+std::ostream &operator << (std::ostream &out, const Fixed &fixed) {
     out << fixed.toFloat();
-    return out ;
+    return out;
 };
 
 float Fixed::toFloat( void ) const {
@@ -63,76 +63,76 @@ int Fixed::toInt( void ) const {
 };
 
 // -------  increment/decrement
-Fixed Fixed::operator++(int) {
+Fixed Fixed::operator ++ (int) {
     Fixed before(*this);
     setRawBits(getRawBits() + 1);
     return before;
 };
 
-Fixed& Fixed::operator++() {
+Fixed& Fixed::operator ++ () {
     setRawBits(getRawBits() + 1);
     return *this;
 };
 
-Fixed Fixed::operator--(int) {
+Fixed Fixed::operator -- (int) {
     Fixed before(*this);
     setRawBits(getRawBits() - 1);
     return before;
 };
 
-Fixed& Fixed::operator--() {
+Fixed& Fixed::operator -- () {
     setRawBits(getRawBits() - 1);
     return *this;
 };
 
 // ------- comparison operators
-bool Fixed::operator>(const Fixed& other) const {
+bool Fixed::operator > (const Fixed& other) const {
     return this->getRawBits() > other.getRawBits();
 };
 
-bool Fixed::operator>=(const Fixed& other) const {
-    return this->getRawBits() >= other.getRawBits();  
+bool Fixed::operator >= (const Fixed& other) const {
+    return this->getRawBits() >= other.getRawBits();
 };
 
-bool Fixed::operator<(const Fixed& other) const {
+bool Fixed::operator < (const Fixed& other) const {
     return this->getRawBits() < other.getRawBits();
 };
 
-bool Fixed::operator<=(const Fixed& other) const {
+bool Fixed::operator <= (const Fixed& other) const {
     return this->getRawBits() <= other.getRawBits();
 };
 
-bool Fixed::operator==(const Fixed& other) const {
+bool Fixed::operator == (const Fixed& other) const {
     return this->getRawBits() == other.getRawBits();
 };
 
-bool Fixed::operator!=(const Fixed& other) const {
+bool Fixed::operator != (const Fixed& other) const {
     return this->getRawBits() != other.getRawBits();
 };
 
 // ------- arithmetic operators
-Fixed Fixed::operator+(const Fixed& other) {
+Fixed Fixed::operator + (const Fixed& other) {
     Fixed result;
     result.setRawBits(this->getRawBits() + other.getRawBits());
     return (result);
 };
 
-Fixed Fixed::operator-(const Fixed& other) {
+Fixed Fixed::operator - (const Fixed& other) {
     Fixed result;
     result.setRawBits(this->getRawBits() - other.getRawBits());
     return (result);
 };
 
-Fixed Fixed::operator*(const Fixed& other) {
-    Fixed result;
-    result.setRawBits((this->getRawBits() / (1 << fractionalBits)) * other.getRawBits());
-    return (result);
+Fixed Fixed::operator * (const Fixed& other) {
+    float f = this->toFloat() * other.toFloat();
+    Fixed result(f);
+    return result;
 };
 
-Fixed Fixed::operator/(const Fixed& other) {
-    Fixed result;
-    result.setRawBits((this->getRawBits() * (1 << fractionalBits)) / other.getRawBits());
-    return (result);
+Fixed Fixed::operator / (const Fixed& other) {
+    float f = this->toFloat() / other.toFloat();
+    Fixed result(f);
+    return result;
 };
 
 // ------- member functions

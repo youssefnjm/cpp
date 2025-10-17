@@ -1,17 +1,17 @@
 NAME=a.out
-GPP=c++
-FLAGS= #-Wall -Wextra -Werror -std=c++98
+
+COMPILE=c++ -Wall -Wextra -Werror -std=c++98
 
 SRC=main.cpp Fixed.cpp 
 OBJ=$(SRC:.cpp=.o)
 
 %.o: %.cpp Fixed.hpp
-	$(GPP) $(FLAGS) -c $< -o $@
+	$(COMPILE) -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(GPP) $(FLAGS) $(OBJ) -o $(NAME)
+	$(COMPILE) $(OBJ) -o $(NAME)
 
 clean:
 	rm -f $(OBJ)

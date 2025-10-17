@@ -2,10 +2,10 @@ NAME=a.out
 
 COMPILE=c++ -Wall -Wextra -Werror -std=c++98
 
-SRC=main.cpp Fixed.cpp 
+SRC=main.cpp ClapTrap.cpp 
 OBJ=$(SRC:.cpp=.o)
 
-%.o: %.cpp Fixed.hpp
+%.o: %.cpp ClapTrap.hpp
 	$(COMPILE) -c $< -o $@
 
 all: $(NAME)
