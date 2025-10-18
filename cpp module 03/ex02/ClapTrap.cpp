@@ -1,6 +1,7 @@
 #include "ClapTrap.hpp"
 
-ClapTrap::ClapTrap() : name("bot"), hitPoints(10), energyPoints(10), attackDamage(0) {
+// _______________ClapTrap constractor 
+ClapTrap::ClapTrap() : name("bot"), hitPoints(100), energyPoints(50), attackDamage(20) {
     std::cout << "ClapTrap constructors of " << name << " called" << std::endl;
 };
 
@@ -16,7 +17,7 @@ ClapTrap::ClapTrap(const ClapTrap &other)
     energyPoints = other.energyPoints;
     attackDamage = other.attackDamage;
     return ;
-};
+}
 
 ClapTrap &ClapTrap::operator=(const ClapTrap &other)
 {
@@ -29,15 +30,16 @@ ClapTrap &ClapTrap::operator=(const ClapTrap &other)
         attackDamage = other.attackDamage;
     }
     return (*this);
-};
+}
 
 ClapTrap::~ClapTrap(void)
 {
     std::cout << "ClapTrap Destructor of " << name << " called" << std::endl;
     return ;
-};
+}
 
-// _______________member function
+// _______________member function of ClapTrap
+
 void ClapTrap::attack(const std::string& target) {
     if (hitPoints <= 0)
         return ;
@@ -45,7 +47,7 @@ void ClapTrap::attack(const std::string& target) {
     {
         std::cout << "ClapTrap " << name << " attacks " << target << ", causing " << attackDamage << " points of damage!" << std::endl;
         energyPoints--;
-    } else 
+    }else 
         std::cout << name << " is out of energy!" << std::endl;
 };
 
