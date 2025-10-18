@@ -2,14 +2,14 @@
 
 // _______________ScavTrap constractor 
 ScavTrap::ScavTrap() : ClapTrap() {
-    std::cout << "ScavTrap constructors of " << name << " called" << std::endl;
+    std::cout << "ScavTrap constructor of " << name << " called" << std::endl;
     hitPoints = 100;
     energyPoints = 50;
     attackDamage = 20;
 };
 
 ScavTrap::ScavTrap(std::string n) : ClapTrap(n) {
-    std::cout << "ScavTrap constructors of " << name << " called" << std::endl;
+    std::cout << "ScavTrap constructor of " << name << " called" << std::endl;
     hitPoints = 100;
     energyPoints = 50;
     attackDamage = 20;
@@ -70,7 +70,7 @@ void ScavTrap::beRepaired(unsigned int amount) {
         energyPoints--;
         hitPoints += amount;
     }else 
-        std::cout << name << " is out of energy!" << std::endl;
+        std::cout << "ScavTrap " << name << " is now in Gate Keeper mode!" << std::endl;
 };
 
 void ScavTrap::takeDamage(unsigned int amount) {

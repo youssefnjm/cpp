@@ -1,7 +1,7 @@
 #include "ClapTrap.hpp"
 
 // _______________ClapTrap constractor 
-ClapTrap::ClapTrap() : name("bot"), hitPoints(100), energyPoints(50), attackDamage(20) {
+ClapTrap::ClapTrap() : name("bot"), hitPoints(10), energyPoints(10), attackDamage(0) {
     std::cout << "ClapTrap constructors of " << name << " called" << std::endl;
 };
 

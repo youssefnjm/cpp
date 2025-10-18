@@ -2,17 +2,17 @@
 
 // _______________FragTrap constractor 
 FragTrap::FragTrap() : ClapTrap() {
-    std::cout << "FragTrap Destructor of " << name << " called" << std::endl;
+    std::cout << "FragTrap constructor of " << name << " called" << std::endl;
     hitPoints = 100;
-    energyPoints = 50;
-    attackDamage = 20;
+    energyPoints = 100;
+    attackDamage = 30;
 };
 
 FragTrap::FragTrap(std::string n) : ClapTrap(n) {
-    std::cout << "FragTrap Destructor of " << name << " called" << std::endl;
+    std::cout << "FragTrap constructor of " << name << " called" << std::endl;
     hitPoints = 100;
-    energyPoints = 50;
-    attackDamage = 20;
+    energyPoints = 100;
+    attackDamage = 30;
 };
 
 FragTrap::FragTrap(const FragTrap &other)
