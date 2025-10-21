@@ -45,7 +45,6 @@ ScavTrap::~ScavTrap(void)
 }
 
 // _______________member function of ScavTrap
-
 void ScavTrap::guardGate() {
    std::cout << "ScavTrap " << name << " Gate keeper mode" << std::endl; 
 };
