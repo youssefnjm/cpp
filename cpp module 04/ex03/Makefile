@@ -1,11 +1,12 @@
 NAME=a.out
 
-COMPILE=c++ -Wall -Wextra -Werror -std=c++98
+COMPILE=c++ -Wall -Wextra -Werror -std=c++98 #-fsanitize=address -g
 
-SRC=main.cpp
+
+SRC=main.cpp AMateria.cpp Character.cpp Cure.cpp ICharacter.cpp IMateriaSource.cpp Ice.cpp MateriaSource.cpp List.cpp
 OBJ=$(SRC:.cpp=.o)
 
-%.o: %.cpp
+%.o: %.cpp AMateria.hpp Character.hpp Cure.hpp ICharacter.hpp IMateriaSource.hpp Ice.hpp MateriaSource.hpp List.hpp
 	$(COMPILE) -c $< -o $@
 
 all: $(NAME)

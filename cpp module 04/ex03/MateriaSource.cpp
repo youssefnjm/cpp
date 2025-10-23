@@ -1,0 +1,99 @@
+#include "MateriaSource.hpp"
+
+// Default constructor
+MateriaSource::MateriaSource(void)
+{
+    std::cout << "MateriaSource Default constructor called" << std::endl;
+    _inventory[0] = NULL;
+    _inventory[1] = NULL;
+    _inventory[2] = NULL;
+    _inventory[3] = NULL;
+    return ;
+}
+
+// Copy constructor
+MateriaSource::MateriaSource(const MateriaSource &other)
+{
+    std::cout << "MateriaSource Copy constructor called" << std::endl;
+    if (other._inventory[0])
+        _inventory[0] = other._inventory[0]->clone();
+    else
+        _inventory[0] = NULL;
+    if (other._inventory[1])
+        _inventory[1] = other._inventory[1]->clone();
+    else
+        _inventory[1] = NULL;
+    if (other._inventory[2])
+        _inventory[2] = other._inventory[2]->clone();
+    else
+        _inventory[2] = NULL;
+    if (other._inventory[3])
+        _inventory[3] = other._inventory[3]->clone();
+    else
+        _inventory[3] = NULL;
+    return ;
+}
+
+// Assignment operator overload
+MateriaSource &MateriaSource::operator=(const MateriaSource &other)
+{
+    std::cout << "MateriaSource Assignment operator called" << std::endl;
+    delete _inventory[0];
+    delete _inventory[1];
+    delete _inventory[2];
+    delete _inventory[3];
+    if (other._inventory[0])
+        _inventory[0] = other._inventory[0]->clone();
+    else
+        _inventory[0] = NULL;
+    if (other._inventory[1])
+        _inventory[1] = other._inventory[1]->clone();
+    else
+        _inventory[1] = NULL;
+    if (other._inventory[2])
+        _inventory[2] = other._inventory[2]->clone();
+    else
+        _inventory[2] = NULL;
+    if (other._inventory[3])
+        _inventory[3] = other._inventory[3]->clone();
+    else
+        _inventory[3] = NULL;
+    return (*this);
+}
+
+// Destructor
+MateriaSource::~MateriaSource(void)
+{
+    std::cout << "MateriaSource Destructor called" << std::endl;
+    delete _inventory[0];
+    delete _inventory[1];
+    delete _inventory[2];
+    delete _inventory[3];
+    return ;
+}
+
+
+// _________________ member function
+void MateriaSource::learnMateria(AMateria *tmp) {
+    for (int i = 0; i < 4; i++)
+    {
+        if (!_inventory[i])
+        {
+            _inventory[i] = tmp;
+            return ;
+        }
+    }
+    delete tmp;
+};
+
+AMateria* MateriaSource::createMateria(std::string material) {
+    for (int i = 0; i < 4; i++)
+    {
+        if (_inventory[i] && _inventory[i]->getType() == material)
+        {
+            AMateria* tmp = _inventory[i]->clone();
+            return tmp;
+        }
+    }
+    return (NULL);
+};
