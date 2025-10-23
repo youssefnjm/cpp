@@ -107,25 +107,23 @@ void Character::equip(AMateria* m) {
 };
 
 void Character::unequip(int idx) {
-    if ((idx >= 0 && idx <= 3))
+
+    if ((idx < 0 || idx > 3))
+        std::cout << "slot index out of range" << std::endl;
+    else if ((idx >= 0 && idx <= 3) && !_inventory[idx])
+        std::cout << "empty slot" << std::endl;
+    else
     {
         List::addLast(_inventory[idx]);
-        _inventory[idx] = NULL;
-        return ;
+        _inventory[idx]= NULL;
     }
-    std::cout << "slot index out of range" << std::endl;
 };
 
 void Character::use(int idx, ICharacter& target) {
-    if (idx >= 0 && idx <= 3 &&  _inventory[idx])
-    {
-        _inventory[idx]->use(target);
-        return ;
-    }
-    if ( _inventory[idx])
-    {
+    if ((idx < 0 || idx > 3))
+        std::cout << "slot index out of range" << std::endl;
+    else if ((idx >= 0 && idx <= 3) && !_inventory[idx])
         std::cout << "empty slot" << std::endl;
-        return ;
-    }
-    std::cout << "slot index out of range" << std::endl;
+    else
+        _inventory[idx]->use(target);
 };

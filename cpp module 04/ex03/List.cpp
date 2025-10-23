@@ -24,12 +24,17 @@ void List::addLast(AMateria *ptr) {
     }
     List *tmp = _head;
     while (tmp->_next != NULL) {
-        if (tmp->_ptr == node->_ptr)
+        if (tmp->_ptr == ptr)
         {
             delete node;
             return ;
         }
         tmp = tmp->_next;
+    }
+    if (tmp->_ptr == ptr)
+    {
+        delete node;
+        return ;
     }
     tmp->_next = node;
 }
