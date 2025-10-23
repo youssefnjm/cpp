@@ -4,7 +4,6 @@
 // Default constructor
 Character::Character(void) : _name("bot")
 {
-    std::cout << "Character Default constructor called" << std::endl;
     _inventory[0] = NULL;
     _inventory[1] = NULL;
     _inventory[2] = NULL;
@@ -15,7 +14,6 @@ Character::Character(void) : _name("bot")
 // paramitrize constructor
 Character::Character(std::string val) : _name(val)
 {
-    std::cout << "Character paramitrize constructor called" << std::endl;
     _inventory[0] = NULL;
     _inventory[1] = NULL;
     _inventory[2] = NULL;
@@ -25,7 +23,6 @@ Character::Character(std::string val) : _name(val)
 // Copy constructor
 Character::Character(const Character &other) : _name(other.getName())
 {
-    std::cout << "Character Copy constructor called" << std::endl;
     if (other._inventory[0])
         _inventory[0] = other._inventory[0]->clone();
     else
@@ -48,7 +45,6 @@ Character::Character(const Character &other) : _name(other.getName())
 // Assignment operator overload
 Character &Character::operator=(const Character &other)
 {
-    std::cout << "Character Assignment operator called" << std::endl;
     if (this != &other)
     {
         for (int i = 0; i < 4; i++)
@@ -76,7 +72,6 @@ Character &Character::operator=(const Character &other)
 // Destructor
 Character::~Character(void)
 {
-    std::cout << "Character Destructor called" << std::endl;
     for (int i = 0; i < 4; i++)
         List::addLast(_inventory[i]);
     

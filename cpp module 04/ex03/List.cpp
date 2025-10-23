@@ -3,11 +3,7 @@
 List* List::_head = NULL;
 
 // Default constructor
-List::List(void) : _ptr(NULL), _next(NULL)
-{
-    std::cout << "List Default constructor called" << std::endl;
-    return ;
-}
+List::List(void) : _ptr(NULL), _next(NULL) {}
 
 // ____________ member function
 void List::addLast(AMateria *ptr) {

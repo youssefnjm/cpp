@@ -1,16 +1,11 @@
 #include "Ice.hpp"
 
 // Default constructor
-Ice::Ice(void) : AMateria("ice")
-{
-    std::cout << "Ice Default constructor called" << std::endl;
-    return ;
-}
+Ice::Ice(void) : AMateria("ice") {}
 
 // Copy constructor
 Ice::Ice(const Ice &other) : AMateria("ice")
 {
-    std::cout << "Ice Copy constructor called" << std::endl;
     (void) other;
     return ;
 }
@@ -18,17 +13,12 @@ Ice::Ice(const Ice &other) : AMateria("ice")
 // Assignment operator overload
 Ice &Ice::operator=(const Ice &other)
 {
-    std::cout << "Ice Assignment operator called" << std::endl;
     (void) other;
     return (*this);
 }
 
 // Destructor
-Ice::~Ice(void)
-{
-    std::cout << "Ice Destructor called" << std::endl;
-    return ;
-}
+Ice::~Ice(void) {}
 
 // _______________ member function
 AMateria* Ice::clone() const {

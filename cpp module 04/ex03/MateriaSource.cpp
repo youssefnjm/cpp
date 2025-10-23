@@ -4,7 +4,6 @@
 // Default constructor
 MateriaSource::MateriaSource(void)
 {
-    std::cout << "MateriaSource Default constructor called" << std::endl;
     _inventory[0] = NULL;
     _inventory[1] = NULL;
     _inventory[2] = NULL;
@@ -15,7 +14,6 @@ MateriaSource::MateriaSource(void)
 // Copy constructor
 MateriaSource::MateriaSource(const MateriaSource &other)
 {
-    std::cout << "MateriaSource Copy constructor called" << std::endl;
     if (other._inventory[0])
         _inventory[0] = other._inventory[0]->clone();
     else
@@ -38,7 +36,6 @@ MateriaSource::MateriaSource(const MateriaSource &other)
 // Assignment operator overload
 MateriaSource &MateriaSource::operator=(const MateriaSource &other)
 {
-    std::cout << "MateriaSource Assignment operator called" << std::endl;
     for (int i = 0; i < 4; i++)
         List::addLast(_inventory[i]);
     if (other._inventory[0])
@@ -63,12 +60,10 @@ MateriaSource &MateriaSource::operator=(const MateriaSource &other)
 // Destructor
 MateriaSource::~MateriaSource(void)
 {
-    std::cout << "MateriaSource Destructor called" << std::endl;
     for (int i = 0; i < 4; i++)
         List::addLast(_inventory[i]);
     return ;
 }
-
 
 // _________________ member function
 void MateriaSource::learnMateria(AMateria *tmp) {
@@ -82,7 +77,7 @@ void MateriaSource::learnMateria(AMateria *tmp) {
             return ;
         }
     }
-    delete tmp;
+    List::addLast(tmp);
 };
 
 AMateria* MateriaSource::createMateria(std::string material) {

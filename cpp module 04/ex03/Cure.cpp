@@ -1,16 +1,11 @@
 #include "Cure.hpp"
 
 // Default constructor
-Cure::Cure(void) : AMateria("cure")
-{
-    std::cout << "Cure Default constructor called" << std::endl;
-    return ;
-}
+Cure::Cure(void) : AMateria("cure") {}
 
 // Copy constructor
 Cure::Cure(const Cure &other) : AMateria("cure")
 {
-    std::cout << "Cure Copy constructor called" << std::endl;
     (void) other;
     return ;
 }
@@ -18,17 +13,12 @@ Cure::Cure(const Cure &other) : AMateria("cure")
 // Assignment operator overload
 Cure &Cure::operator=(const Cure &other)
 {
-    std::cout << "Cure Assignment operator called" << std::endl;
     (void) other;
     return (*this);
 }
 
 // Destructor
-Cure::~Cure(void)
-{
-    std::cout << "Cure Destructor called" << std::endl;
-    return ;
-}
+Cure::~Cure(void) {}
 
 // _______________ member function
 AMateria* Cure::clone() const {
