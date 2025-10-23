@@ -88,6 +88,13 @@ std::string const &Character::getName() const { return (_name); };
 
 // _________________ member function
 void Character::equip(AMateria* m) {
+    if (!m)
+        return ;
+    for (int i = 0; i < 4; i++)
+    {
+        if (_inventory[i] && _inventory[i] == m)
+            return ;
+    }
     for (int i = 0; i < 4; i++)
     {
         if (!_inventory[i])

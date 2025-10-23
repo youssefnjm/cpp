@@ -72,6 +72,8 @@ MateriaSource::~MateriaSource(void)
 
 // _________________ member function
 void MateriaSource::learnMateria(AMateria *tmp) {
+    if (!tmp)
+        return ;
     for (int i = 0; i < 4; i++)
     {
         if (!_inventory[i])

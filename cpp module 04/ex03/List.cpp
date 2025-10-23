@@ -11,7 +11,8 @@ List::List(void) : _ptr(NULL), _next(NULL)
 
 // ____________ member function
 void List::addLast(AMateria *ptr) {
-
+    if (!ptr)
+        return ;
     List *node = new List;
     node->_ptr = ptr;
     node->_next = NULL;
