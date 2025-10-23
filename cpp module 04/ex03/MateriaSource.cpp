@@ -1,4 +1,5 @@
 #include "MateriaSource.hpp"
+#include "List.hpp"
 
 // Default constructor
 MateriaSource::MateriaSource(void)
@@ -38,10 +39,8 @@ MateriaSource::MateriaSource(const MateriaSource &other)
 MateriaSource &MateriaSource::operator=(const MateriaSource &other)
 {
     std::cout << "MateriaSource Assignment operator called" << std::endl;
-    delete _inventory[0];
-    delete _inventory[1];
-    delete _inventory[2];
-    delete _inventory[3];
+    for (int i = 0; i < 4; i++)
+        List::addLast(_inventory[i]);
     if (other._inventory[0])
         _inventory[0] = other._inventory[0]->clone();
     else
@@ -65,10 +64,8 @@ MateriaSource &MateriaSource::operator=(const MateriaSource &other)
 MateriaSource::~MateriaSource(void)
 {
     std::cout << "MateriaSource Destructor called" << std::endl;
-    delete _inventory[0];
-    delete _inventory[1];
-    delete _inventory[2];
-    delete _inventory[3];
+    for (int i = 0; i < 4; i++)
+        List::addLast(_inventory[i]);
     return ;
 }
 

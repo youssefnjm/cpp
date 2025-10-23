@@ -5,19 +5,12 @@ List* List::_head = NULL;
 // Default constructor
 List::List(void) : _ptr(NULL), _next(NULL)
 {
-    std::cout << "Default constructor called" << std::endl;
-    return ;
-}
-
-// Destructor
-List::~List(void)
-{
-    std::cout << "Destructor called" << std::endl;
+    std::cout << "List Default constructor called" << std::endl;
     return ;
 }
 
 // ____________ member function
-void List::add_last(AMateria *ptr) {
+void List::addLast(AMateria *ptr) {
 
     List *node = new List;
     node->_ptr = ptr;
@@ -30,18 +23,24 @@ void List::add_last(AMateria *ptr) {
     }
     List *tmp = _head;
     while (tmp->_next != NULL) {
+        if (tmp->_ptr == node->_ptr)
+        {
+            delete node;
+            return ;
+        }
         tmp = tmp->_next;
     }
     tmp->_next = node;
 }
 
-void List::free_all()
+void List::freeAll()
 {
     if (!_head)
         return ;
     while (_head)
     {
         delete _head->_ptr;
+        _head->_ptr = NULL;
         List* tmp = _head;
         _head = _head->_next;
         delete tmp;

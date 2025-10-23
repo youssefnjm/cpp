@@ -3,19 +3,17 @@
 #include "AMateria.hpp"
 
 class AMateria;
+
 struct List
 {
-    protected:
-    public:
-        static List *_head;
-        AMateria *_ptr;
-        List *_next;
+    static List *_head;
+    AMateria *_ptr;
+    List *_next;
 
-        List(void);
-        ~List();
+    List(void);
 
-        static void add_last(AMateria *ptr);
-        static void free_all();
+    static void addLast(AMateria *ptr);
+    static void freeAll();
 
 };
 

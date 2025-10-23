@@ -51,10 +51,8 @@ Character &Character::operator=(const Character &other)
     std::cout << "Character Assignment operator called" << std::endl;
     if (this != &other)
     {
-        delete _inventory[0];
-        delete _inventory[1];
-        delete _inventory[2];
-        delete _inventory[3];
+        for (int i = 0; i < 4; i++)
+            List::addLast(_inventory[i]);
         if (other._inventory[0])
             _inventory[0] = other._inventory[0]->clone();
         else
@@ -79,12 +77,9 @@ Character &Character::operator=(const Character &other)
 Character::~Character(void)
 {
     std::cout << "Character Destructor called" << std::endl;
-    delete _inventory[0];
-    delete _inventory[1];
-    delete _inventory[2];
-    delete _inventory[3];
-
-    List::free_all();
+    for (int i = 0; i < 4; i++)
+        List::addLast(_inventory[i]);
+    
     return ;
 }
 
@@ -93,12 +88,6 @@ std::string const &Character::getName() const { return (_name); };
 
 // _________________ member function
 void Character::equip(AMateria* m) {
-
-    for (int i = 0; i < 4; i++)
-    {
-        if (_inventory[i] == m)
-            return ;
-    }
     for (int i = 0; i < 4; i++)
     {
         if (!_inventory[i])
@@ -113,7 +102,7 @@ void Character::equip(AMateria* m) {
 void Character::unequip(int idx) {
     if ((idx >= 0 && idx <= 3))
     {
-        List::add_last(_inventory[idx]);
+        List::addLast(_inventory[idx]);
         _inventory[idx] = NULL;
         return ;
     }
@@ -121,10 +110,15 @@ void Character::unequip(int idx) {
 };
 
 void Character::use(int idx, ICharacter& target) {
-    if ((idx >= 0 && idx <= 3) && _inventory[idx])
+    if (idx >= 0 && idx <= 3 &&  _inventory[idx])
     {
         _inventory[idx]->use(target);
         return ;
     }
-    std::cout << "empty slot" << std::endl;
+    if ( _inventory[idx])
+    {
+        std::cout << "empty slot" << std::endl;
+        return ;
+    }
+    std::cout << "slot index out of range" << std::endl;
 };
