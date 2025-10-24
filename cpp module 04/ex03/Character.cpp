@@ -49,22 +49,27 @@ Character &Character::operator=(const Character &other)
     {
         for (int i = 0; i < 4; i++)
             List::addLast(_inventory[i]);
+
         if (other._inventory[0])
             _inventory[0] = other._inventory[0]->clone();
         else
             _inventory[0] = NULL;
+
         if (other._inventory[1])
             _inventory[1] = other._inventory[1]->clone();
         else
             _inventory[1] = NULL;
+
         if (other._inventory[2])
             _inventory[2] = other._inventory[2]->clone();
         else
             _inventory[2] = NULL;
+
         if (other._inventory[3])
             _inventory[3] = other._inventory[3]->clone();
         else
             _inventory[3] = NULL;
+
     }
     return (*this);
 }

@@ -5,14 +5,14 @@
 int main()
 {
     const Animal* meta = new Animal();
-    const Animal* j = new Dog();
     const Animal* i = new Cat();
+    const Animal* j = new Dog();
 
-    std::cout << j->getType() << " " << std::endl;
     std::cout << i->getType() << " " << std::endl;
+    std::cout << j->getType() << " " << std::endl;
     
-    i->makeSound();
     j->makeSound();
+    i->makeSound();
     meta->makeSound();
 
     delete meta;

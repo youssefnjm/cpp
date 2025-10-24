@@ -14,7 +14,7 @@ struct List
 
     static void addLast(AMateria *ptr);
     static void freeAll();
-
+    
 };
 
 

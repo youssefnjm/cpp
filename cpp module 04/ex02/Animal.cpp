@@ -39,8 +39,3 @@ Animal::~Animal(void)
 // ____________________ getter/stter
 void Animal::setType(std::string value) { type = value; };
 std::string Animal::getType() const { return type; };
-
-// ____________________ member finction
-void Animal::makeSound() const {
-    std::cout << "unknown sound !!!" << std::endl;
-}

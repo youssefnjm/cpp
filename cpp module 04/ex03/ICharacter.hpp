@@ -7,10 +7,6 @@ class AMateria;
 class ICharacter
 {
     public:
-        ICharacter(void);
-        ICharacter(std::string val);
-        ICharacter(const ICharacter& other);
-        ICharacter &operator=(const ICharacter &other);
         virtual ~ICharacter();
     
         virtual std::string const & getName() const = 0;

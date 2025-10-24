@@ -8,13 +8,8 @@
 #include "List.hpp"
 #include <new>
 
-void gg() {
-    system("leaks a.out");
-}
-
 int main()
 {
-    atexit(gg);
     IMateriaSource* src = new MateriaSource();
     src->learnMateria(new Ice());
     src->learnMateria(new Cure());
@@ -34,7 +29,6 @@ int main()
     tmp = src->createMateria("cure");
     me->equip(tmp);
 
-
     ICharacter* bob = new Character("bob");
     me->use(0, *bob);
     me->use(1, *bob);
@@ -47,6 +41,5 @@ int main()
     delete src;
 
     List::freeAll();
-    std::cout << std::endl;
     return 0;
 }

@@ -7,10 +7,7 @@ AMateria::AMateria(void) {}
 AMateria::AMateria(std::string const & type) : _type(type) {}
 
 // Copy constructor
-AMateria::AMateria(const AMateria &other) : _type(other.getType())
-{
-    (void) other;
-}
+AMateria::AMateria(const AMateria &other) : _type(other.getType()) { (void) other; }
 
 // Assignment operator overload
 AMateria &AMateria::operator=(const AMateria &other)
@@ -20,10 +17,7 @@ AMateria &AMateria::operator=(const AMateria &other)
 }
 
 // Destructor
-AMateria::~AMateria(void)
-{
-    return ;
-}
+AMateria::~AMateria(void) {}
 
 // _______________ getter
 std::string const &AMateria::getType() const { return _type; };

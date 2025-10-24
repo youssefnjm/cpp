@@ -6,7 +6,7 @@
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 11:47:23 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/22 23:55:44 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/23 10:22:42 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ class Fixed
 {
     private:
         int integer ;
-    public:
         static const int fractionalBits = 8;
+    public:
         int getRawBits( void ) const;
         void setRawBits( int const raw );
 

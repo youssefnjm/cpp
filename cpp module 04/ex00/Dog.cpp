@@ -9,13 +9,17 @@ Dog::Dog(void): Animal("Dog")
 Dog::Dog(const Dog &other)
 {
     std::cout << "Dog Copy constructor called" << std::endl;
-    (void) other;}
+    this->setType(other.getType());
+}
 
 // ____________________ Assignment operator overload
 Dog &Dog::operator=(const Dog &other)
 {
     std::cout << "Dog Assignment operator called" << std::endl;
-    (void) other;
+    if (this != &other)
+    {
+        this->setType(other.getType());
+    }
     return (*this);
 }
 
@@ -25,7 +29,7 @@ Dog::~Dog(void)
     std::cout << "Dog Destructor called" << std::endl;
 }
 
-// ____________________ member finction
+// ____________________ member function
 void Dog::makeSound() const {
     std::cout << "Dog barks" << std::endl;
 }

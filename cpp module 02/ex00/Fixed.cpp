@@ -6,11 +6,12 @@
 /*   By: ynoujoum <ynoujoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 11:47:14 by ynoujoum          #+#    #+#             */
-/*   Updated: 2025/10/15 06:49:16 by ynoujoum         ###   ########.fr       */
+/*   Updated: 2025/10/24 08:48:13 by ynoujoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
+#include <iostream>
 
 int Fixed::getRawBits( void ) const { 
     std::cout << "getRawBits member function called" << std::endl;

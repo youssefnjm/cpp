@@ -11,7 +11,7 @@ Cat::Cat(void) : Animal("Cat")
 Cat::Cat(const Cat &other)
 {
     std::cout << "Cat Copy constructor called" << std::endl;
-    (void) other;
+    this->setType(other.getType());
     return ;
 }
 
@@ -19,7 +19,7 @@ Cat::Cat(const Cat &other)
 Cat &Cat::operator=(const Cat &other)
 {
     std::cout << "Cat Assignment operator called" << std::endl;
-    (void) other;
+    this->setType(other.getType());
     return (*this);
 }
 
@@ -30,7 +30,7 @@ Cat::~Cat(void)
     return ;
 }
 
-// ____________________ member finction
+// ____________________ member function
 void Cat::makeSound() const {
     std::cout << "Cat meows" << std::endl;
 }

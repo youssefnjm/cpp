@@ -11,11 +11,6 @@ Dog::Dog(void) : Animal("Dog")
 Dog::Dog(const Dog &other)
 {
     std::cout << "Dog Copy constructor called" << std::endl;
-    if (this->brain)
-    {
-        delete this->brain;
-        this->brain = NULL;
-    }
     this->brain = new Brain(*other.brain);
     this->setType(other.getType());
 }
@@ -43,6 +38,17 @@ Dog::~Dog(void)
     if (brain)
         delete brain;
 }
+
+// ____________________ getter/setter
+void Dog::setIdeas(std::string value, int index) {
+    if (index >= 0 && index < 100)
+        brain->setIdeas(value, index);
+};
+std::string Dog::getIdeas(int index) const { 
+    if (index >= 0 && index < 100)
+        return brain->getIdeas(index);
+    return "";
+};
 
 // ____________________ member finction
 void Dog::makeSound() const {
