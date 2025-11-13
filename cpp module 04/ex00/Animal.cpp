@@ -4,29 +4,27 @@
 Animal::Animal(void) : type("unknown")
 {
     std::cout << "Animal Default constructor called" << std::endl;
-    return ;
 }
 
 // ____________________ parametrize constructor
 Animal::Animal(std::string setType) : type(setType)
 {
     std::cout << "Animal parametrize constructor called" << std::endl;
-    return ;
 }
 
 // ____________________ Copy constructor
 Animal::Animal(const Animal &other)
 {
     std::cout << "Animal Copy constructor called" << std::endl;
-    (void) other;
-    return ;
+    this->type = other.getType();
 }
 
 // ____________________ Assignment operator overload
 Animal &Animal::operator=(const Animal &other)
 {
     std::cout << "Animal Assignment operator called" << std::endl;
-    (void) other;
+    if (this != &other)
+        this->type = other.getType();
     return (*this);
 }
 
@@ -34,7 +32,6 @@ Animal &Animal::operator=(const Animal &other)
 Animal::~Animal(void)
 {
     std::cout << "Animal Destructor called" << std::endl;
-    return ;
 }
 
 // ____________________ getter/stter

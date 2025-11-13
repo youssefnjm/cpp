@@ -25,7 +25,8 @@ Animal::Animal(const Animal &other)
 Animal &Animal::operator=(const Animal &other)
 {
     std::cout << "Animal Assignment operator called" << std::endl;
-    this->setType(other.getType());
+    if (this != &other)
+        this->setType(other.getType());
     return (*this);
 }
 

@@ -6,7 +6,7 @@
 #include "Ice.hpp"
 #include "Cure.hpp"
 #include "List.hpp"
-#include <new>
+#include <iostream>
 
 int main()
 {
@@ -26,7 +26,7 @@ int main()
     tmp = src->createMateria("cure");
     me->equip(tmp);
     me->unequip(0);
-    tmp = src->createMateria("cure");
+    tmp = src->createMateria("ice");
     me->equip(tmp);
 
     ICharacter* bob = new Character("bob");
