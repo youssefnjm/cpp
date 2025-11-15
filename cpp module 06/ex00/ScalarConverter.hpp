@@ -1,0 +1,17 @@
+#ifndef SCALARCONVERTER_HPP
+# define SCALARCONVERTER_HPP
+# include <iostream>
+
+class ScalarConverter
+{
+    public:
+        ScalarConverter(void);
+        ScalarConverter(const ScalarConverter& other);
+        ScalarConverter &operator=(const ScalarConverter &other);
+        ~ScalarConverter();
+
+        static void convert();
+};
+
+#endif
+

@@ -8,7 +8,7 @@ ShrubberyCreationForm::ShrubberyCreationForm(void) : AForm("dumpName", 145, 137)
 ShrubberyCreationForm::ShrubberyCreationForm(std::string target) : AForm(target, 145, 137) {}
 
 // Copy constructor
-ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &other) { (void) other; }
+ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &other) : AForm(other) { (void) other; }
 
 // Assignment operator overload
 ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationForm &other) { (void)other; return (*this); }

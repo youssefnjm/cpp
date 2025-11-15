@@ -15,7 +15,7 @@ int main()
         b.signAForm(*rrf);
         b.executeForm(*rrf);
 
-        // delete rrf;
+        delete rrf;
     } 
     catch (std::exception &e) {
         std::cout << "exeption: " << e.what();

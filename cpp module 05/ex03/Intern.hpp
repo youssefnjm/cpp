@@ -1,6 +1,7 @@
 #ifndef INTERN_HPP
 # define INTERN_HPP
 #include "./AForm.hpp"
+#include <exception>
 
 class Intern
 {
@@ -14,6 +15,9 @@ class Intern
         Intern &operator=(const Intern &other);
         ~Intern();
 
+        class FormNotFoundException : public std::exception {
+            const char *what() const throw();
+        };
         AForm* makeForm(std::string formName, std::string target);
 };
 

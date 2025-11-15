@@ -15,6 +15,10 @@ Intern &Intern::operator=(const Intern &other) {(void) other; return (*this);}
 // Destructor
 Intern::~Intern(void) {}
 
+const char *Intern::FormNotFoundException::what() const throw() {
+    return "Form not fount";
+}
+
 AForm *Intern::createShrubbery(std::string target) {
     return (new ShrubberyCreationForm(target));
 };
@@ -43,7 +47,6 @@ AForm* Intern::makeForm(std::string formName, std::string target) {
             return (this->*ptr[i])(target);
         }
     };
-    std::cout << "incorrect form " << formName << std::endl;
 
-    return (NULL);
+    throw FormNotFoundException();
 };

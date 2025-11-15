@@ -14,11 +14,7 @@ AForm::AForm(std::string valName, int valSignGrade, int valExecGrade) : name (va
 }
 
 // Copy constructor
-AForm::AForm(const AForm &other) : name ("dumpName"), signGrade(0), execGrade(0)
-{
-    this->isSigned = other.isSigned;
-    return ;
-}
+AForm::AForm(const AForm &other) : name(other.name),  isSigned(other.isSigned), signGrade(other.signGrade),  execGrade(other.execGrade) {}
 
 // Assignment operator overload
 AForm &AForm::operator=(const AForm &other)
@@ -33,7 +29,7 @@ AForm::~AForm(void) {}
 
 const char *AForm::GradeTooHighException::what() const throw()
 {
-    return "grade too hight";
+    return "grade too high";
 };
 const char *AForm::GradeTooLowException::what() const throw()
 {
@@ -59,8 +55,13 @@ void AForm::beSigned(const Bureaucrat &b) {
 void AForm::execute(Bureaucrat const &executor) const {
     if (this->getIsSigned() == false)
         throw AForm::FormNotSignedException();
-    else if (this->getSignGrade() < executor.getGrade())
+    else if (this->getExecGrade() < executor.getGrade())
         throw AForm::GradeTooLowException();
 
     executeAction();
+};
+
+std::ostream &operator << (std::ostream &out, const AForm &AForm) {
+    out << "Name: " << AForm.getName() << ", isSigned: " << AForm.getIsSigned() << ", signGrade: " << AForm.getSignGrade() << ", execGrade: " << AForm.getExecGrade();
+    return out;
 };

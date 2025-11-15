@@ -8,7 +8,7 @@ PresidentialPardonForm::PresidentialPardonForm(void) : AForm("dumpName", 25, 5) 
 PresidentialPardonForm::PresidentialPardonForm(std::string target) : AForm(target, 25, 5) {}
 
 // Copy constructor
-PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm &other) { (void) other; }
+PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm &other) : AForm(other) { (void) other; }
 
 // Assignment operator overload
 PresidentialPardonForm &PresidentialPardonForm::operator=(const PresidentialPardonForm &other) { (void) other; return *this; }

@@ -14,11 +14,7 @@ Bureaucrat::Bureaucrat(std::string nameVal, int gradeVal) : name(nameVal), grade
 }
 
 // Copy constructor
-Bureaucrat::Bureaucrat(const Bureaucrat &other)
-{
-    this->grade = other.grade;
-    return ;
-}
+Bureaucrat::Bureaucrat(const Bureaucrat &other) : name(other.name), grade(other.grade) {}
 
 // Assignment operator overload
 Bureaucrat &Bureaucrat::operator=(const Bureaucrat &other)
@@ -53,7 +49,7 @@ void Bureaucrat::decrementGrade() {
 
 const char *Bureaucrat::GradeTooHighException::what() const throw()
 {
-    return "grade too hight";
+    return "grade too high";
 };
 const char *Bureaucrat::GradeTooLowException::what() const throw()
 {
@@ -65,7 +61,7 @@ void Bureaucrat::signAForm(AForm &AForm){
         AForm.beSigned(*this);
         std::cout << this->getName() << " signed " << AForm.getName() << std::endl;
     } catch (std::exception &err) {
-        std::cout << "the bureaucrat " << this->getName() << " couldn't sign "<< AForm.getName() << " because " << err.what() << std::endl; 
+        std::cout << this->getName() << " couldn't sign " << AForm.getName() << " because " << err.what() << "." << std::endl; 
     }
 }
 
@@ -77,9 +73,4 @@ void Bureaucrat::executeForm(AForm const &form) const {
     catch (std::exception &e) {
         std::cout << this->getName() << " can't executed " << form.getName() << " form because :" << e.what() << std::endl;
     } 
-};
-
-std::ostream &operator << (std::ostream &out, const AForm &AForm) {
-    out << "Name: " << AForm.getName() << ", isSigned: " << AForm.getIsSigned() << ", signGrade: " << AForm.getSignGrade() << ", execGrade: " << AForm.getExecGrade();
-    return out;
 };

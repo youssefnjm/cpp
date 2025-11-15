@@ -13,11 +13,7 @@ Form::Form(std::string valName, int valSignGrade, int valExecGrade) : name (valN
 }
 
 // Copy constructor
-Form::Form(const Form &other) : name ("dumpName"), signGrade(0), execGrade(0)
-{
-    this->isSigned = other.isSigned;
-    return ;
-}
+Form::Form(const Form &other) : name(other.name),  isSigned(other.isSigned), signGrade(other.signGrade),  execGrade(other.execGrade) {}
 
 // Assignment operator overload
 Form &Form::operator=(const Form &other)
@@ -31,7 +27,7 @@ Form::~Form(void) {}
 
 const char *Form::GradeTooHighException::what() const throw()
 {
-    return "grade too hight";
+    return "grade too high";
 };
 const char *Form::GradeTooLowException::what() const throw()
 {
@@ -48,4 +44,9 @@ void Form::beSigned(const Bureaucrat &b) {
         this->isSigned = true;
     else
         throw Form::GradeTooLowException();
+};
+
+std::ostream &operator << (std::ostream &out, const Form &Form) {
+    out << "Name: " << Form.getName() << ", isSigned: " << Form.getIsSigned() << ", signGrade: " << Form.getSignGrade() << ", execGrade: " << Form.getExecGrade();
+    return out;
 };

@@ -14,11 +14,7 @@ Bureaucrat::Bureaucrat(std::string nameVal, int gradeVal) : name(nameVal), grade
 }
 
 // Copy constructor
-Bureaucrat::Bureaucrat(const Bureaucrat &other)
-{
-    this->grade = other.grade;
-    return ;
-}
+Bureaucrat::Bureaucrat(const Bureaucrat &other) : name(other.name), grade(other.grade) {}
 
 // Assignment operator overload
 Bureaucrat &Bureaucrat::operator=(const Bureaucrat &other)
@@ -53,7 +49,7 @@ void Bureaucrat::decrementGrade() {
 
 const char *Bureaucrat::GradeTooHighException::what() const throw()
 {
-    return "grade too hight";
+    return "grade too high";
 };
 
 const char *Bureaucrat::GradeTooLowException::what() const throw()

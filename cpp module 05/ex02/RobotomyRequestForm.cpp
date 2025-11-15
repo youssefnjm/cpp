@@ -8,7 +8,7 @@ RobotomyRequestForm::RobotomyRequestForm(void) : AForm("dumpName", 72, 45) {}
 RobotomyRequestForm::RobotomyRequestForm(std::string target) : AForm(target, 72, 45) {}
 
 // Copy constructor
-RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &other) { (void) other; }
+RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &other) : AForm(other) { (void) other; }
 
 // Assignment operator overload
 RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm &other) { (void) other; return *this; }
