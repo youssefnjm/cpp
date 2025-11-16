@@ -2,11 +2,10 @@ NAME=a.out
 
 COMPILE=c++ -Wall -Wextra -Werror -std=c++98
 
-
-SRC=ScalarConverter.cpp main.cpp
+SRC=Base.cpp A.cpp B.cpp C.cpp main.cpp
 OBJ=$(SRC:.cpp=.o)
 
-%.o: %.cpp ScalarConverter.hpp
+%.o: %.cpp Base.hpp A.hpp B.hpp C.hpp
 	$(COMPILE) -c $< -o $@
 
 all: $(NAME)
@@ -16,7 +15,7 @@ $(NAME): $(OBJ)
 
 clean:
 	rm -f $(OBJ)
-å
+
 fclean: clean
 	rm -f $(NAME)
 
