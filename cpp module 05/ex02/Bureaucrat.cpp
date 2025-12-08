@@ -13,17 +13,8 @@ Bureaucrat::Bureaucrat(std::string nameVal, int gradeVal) : name(nameVal), grade
     return ;
 }
 
-// Copy constructor
 Bureaucrat::Bureaucrat(const Bureaucrat &other) : name(other.name), grade(other.grade) {}
-
-// Assignment operator overload
-Bureaucrat &Bureaucrat::operator=(const Bureaucrat &other)
-{
-    this->grade = other.grade;
-    return (*this);
-}
-
-// Destructor
+Bureaucrat &Bureaucrat::operator=(const Bureaucrat &other) { this->grade = other.grade; return (*this); }
 Bureaucrat::~Bureaucrat(void) {}
 
 std::ostream &operator << (std::ostream &out, const Bureaucrat &Bureaucrat) {

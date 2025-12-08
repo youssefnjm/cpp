@@ -3,6 +3,9 @@
 #include <exception>
 // Default constructor
 Bureaucrat::Bureaucrat(void) : name("dumpName"), grade(150) {}
+Bureaucrat::Bureaucrat(const Bureaucrat &other) : name(other.name), grade(other.grade) {}
+Bureaucrat &Bureaucrat::operator=(const Bureaucrat &other) { this->grade = other.grade; return (*this); }
+Bureaucrat::~Bureaucrat(void) {}
 
 Bureaucrat::Bureaucrat(std::string nameVal, int gradeVal) : name(nameVal), grade(gradeVal)
 {
@@ -13,18 +16,6 @@ Bureaucrat::Bureaucrat(std::string nameVal, int gradeVal) : name(nameVal), grade
     return ;
 }
 
-// Copy constructor
-Bureaucrat::Bureaucrat(const Bureaucrat &other) : name(other.name), grade(other.grade) {}
-
-// Assignment operator overload
-Bureaucrat &Bureaucrat::operator=(const Bureaucrat &other)
-{
-    this->grade = other.grade;
-    return (*this);
-}
-
-// Destructor
-Bureaucrat::~Bureaucrat(void) {}
 
 std::ostream &operator << (std::ostream &out, const Bureaucrat &Bureaucrat) {
     out << Bureaucrat.getName() << ", bureaucrat grade " << Bureaucrat.getGrade();

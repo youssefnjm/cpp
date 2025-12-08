@@ -3,16 +3,9 @@
 #include "ShrubberyCreationForm.hpp"
 #include "PresidentialPardonForm.hpp"
 
-// Default constructor
 Intern::Intern(void) {}
-
-// Copy constructor
 Intern::Intern(const Intern &other) { (void) other; }
-
-// Assignment operator overload
 Intern &Intern::operator=(const Intern &other) {(void) other; return (*this);}
-
-// Destructor
 Intern::~Intern(void) {}
 
 const char *Intern::FormNotFoundException::what() const throw() {

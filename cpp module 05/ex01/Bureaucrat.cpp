@@ -2,6 +2,9 @@
 #include "Form.hpp"
 // Default constructor
 Bureaucrat::Bureaucrat(void) : name("dumpName"), grade(150) {}
+Bureaucrat::Bureaucrat(const Bureaucrat &other) : name(other.name), grade(other.grade) {}
+Bureaucrat &Bureaucrat::operator=(const Bureaucrat &other) { this->grade = other.grade; return (*this); }
+Bureaucrat::~Bureaucrat(void) {}
 
 Bureaucrat::Bureaucrat(std::string nameVal, int gradeVal) : name(nameVal), grade(gradeVal)
 {
@@ -11,24 +14,6 @@ Bureaucrat::Bureaucrat(std::string nameVal, int gradeVal) : name(nameVal), grade
         throw Bureaucrat::GradeTooHighException();
     return ;
 }
-
-// Copy constructor
-Bureaucrat::Bureaucrat(const Bureaucrat &other) : name(other.name), grade(other.grade) {}
-
-// Assignment operator overload
-Bureaucrat &Bureaucrat::operator=(const Bureaucrat &other)
-{
-    this->grade = other.grade;
-    return (*this);
-}
-
-// Destructor
-Bureaucrat::~Bureaucrat(void) {}
-
-std::ostream &operator << (std::ostream &out, const Bureaucrat &Bureaucrat) {
-    out << Bureaucrat.getName() << ", bureaucrat grade " << Bureaucrat.getGrade();
-    return out;
-};
 
 std::string Bureaucrat::getName() const { return (name); };
 int Bureaucrat::getGrade() const { return (grade); };
@@ -64,3 +49,8 @@ void Bureaucrat::signForm(Form &form){
         std::cout << this->getName() << " couldn't sign " << form.getName() << " because " << err.what() << "." << std::endl; 
     }
 }
+
+std::ostream &operator << (std::ostream &out, const Bureaucrat &Bureaucrat) {
+    out << Bureaucrat.getName() << ", bureaucrat grade " << Bureaucrat.getGrade();
+    return out;
+};

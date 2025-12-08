@@ -13,17 +13,8 @@ AForm::AForm(std::string valName, int valSignGrade, int valExecGrade) : name (va
     return ;
 }
 
-// Copy constructor
 AForm::AForm(const AForm &other) : name(other.name),  isSigned(other.isSigned), signGrade(other.signGrade),  execGrade(other.execGrade) {}
-
-// Assignment operator overload
-AForm &AForm::operator=(const AForm &other)
-{
-    this->isSigned = other.isSigned;
-    return (*this);
-}
-
-// Destructor
+AForm &AForm::operator=(const AForm &other) { this->isSigned = other.isSigned; return (*this); }
 AForm::~AForm(void) {}
 
 

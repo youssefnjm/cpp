@@ -1,8 +1,10 @@
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
 
-// Default constructor
 AForm::AForm(void) : name ("dumpName"), isSigned(false), signGrade(0), execGrade(0) {}
+AForm::AForm(const AForm &other) : name(other.name),  isSigned(other.isSigned), signGrade(other.signGrade),  execGrade(other.execGrade) {}
+AForm &AForm::operator=(const AForm &other) { this->isSigned = other.isSigned; return (*this); }
+AForm::~AForm(void) {}
 
 AForm::AForm(std::string valName, int valSignGrade, int valExecGrade) : name (valName), isSigned(false), signGrade(valSignGrade), execGrade(valExecGrade)
 {
@@ -12,20 +14,6 @@ AForm::AForm(std::string valName, int valSignGrade, int valExecGrade) : name (va
         throw AForm::GradeTooLowException();
     return ;
 }
-
-// Copy constructor
-AForm::AForm(const AForm &other) : name(other.name),  isSigned(other.isSigned), signGrade(other.signGrade),  execGrade(other.execGrade) {}
-
-// Assignment operator overload
-AForm &AForm::operator=(const AForm &other)
-{
-    this->isSigned = other.isSigned;
-    return (*this);
-}
-
-// Destructor
-AForm::~AForm(void) {}
-
 
 const char *AForm::GradeTooHighException::what() const throw()
 {
