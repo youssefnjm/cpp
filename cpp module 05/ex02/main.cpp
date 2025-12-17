@@ -8,16 +8,13 @@
 int main()
 {
     try {
-        Bureaucrat b("b1", 50);
+        Bureaucrat b("b1", 5);
         std::cout << "Bureaucrat: " << b << std::endl;
-
-        // AForm f1("f1", 10, 100);
-        // std::cout << "AForm" << f1 << std::endl;
 
         std::cout << std::endl;
         PresidentialPardonForm f1("pardonForm");
         RobotomyRequestForm f2("roboForm");
-        ShrubberyCreationForm f3("treeForm");
+        ShrubberyCreationForm f3("home");
 
         std::cout << "AForm " << f1 << std::endl;
         std::cout << "AForm " << f2 << std::endl;

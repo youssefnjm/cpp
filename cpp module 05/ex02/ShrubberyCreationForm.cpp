@@ -1,9 +1,10 @@
 #include "ShrubberyCreationForm.hpp"
+#include "Bureaucrat.hpp"
 #include <fstream>
 
-ShrubberyCreationForm::ShrubberyCreationForm(void) : AForm("dumpName", 145, 137) {}
+ShrubberyCreationForm::ShrubberyCreationForm(void) : AForm("shrubbery creation", 145, 137), target("dumpName")  {}
 
-ShrubberyCreationForm::ShrubberyCreationForm(std::string target) : AForm(target, 145, 137) {}
+ShrubberyCreationForm::ShrubberyCreationForm(std::string vatTarget) : AForm("shrubbery creation", 145, 137), target(vatTarget)  {}
 
 ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &other) : AForm(other) { (void) other; }
 
@@ -11,8 +12,16 @@ ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationF
 
 ShrubberyCreationForm::~ShrubberyCreationForm(void) {}
 
-void ShrubberyCreationForm::executeAction() const {
-    std::ofstream outFile(this->getName() + "_shrubbery");
+std::string ShrubberyCreationForm::getTarget() const {
+    return target;
+};
+void ShrubberyCreationForm::execute(Bureaucrat const & executor) const {
+    if (this->getIsSigned() == false)
+        throw AForm::FormNotSignedException();
+    else if (this->getExecGrade() < executor.getGrade())
+        throw AForm::GradeTooLowException();
+
+    std::ofstream outFile(this->getTarget() + "_shrubbery");
 
     if (!outFile.is_open())
         std::cout << "can't open the file" << std::endl;

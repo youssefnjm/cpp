@@ -1,7 +1,6 @@
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
 
-// Default constructor
 AForm::AForm(void) : name ("dumpName"), isSigned(false), signGrade(0), execGrade(0) {}
 
 AForm::AForm(std::string valName, int valSignGrade, int valExecGrade) : name (valName), isSigned(false), signGrade(valSignGrade), execGrade(valExecGrade)
@@ -41,15 +40,6 @@ void AForm::beSigned(const Bureaucrat &b) {
         this->isSigned = true;
     else
         throw AForm::GradeTooLowException();
-};
-
-void AForm::execute(Bureaucrat const &executor) const {
-    if (this->getIsSigned() == false)
-        throw AForm::FormNotSignedException();
-    else if (this->getExecGrade() < executor.getGrade())
-        throw AForm::GradeTooLowException();
-
-    executeAction();
 };
 
 std::ostream &operator << (std::ostream &out, const AForm &AForm) {
