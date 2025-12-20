@@ -1,64 +1,89 @@
 #include "ScalarConverter.hpp"
-#include <cerrno>
-#include <cfloat>
-#include <climits>
 #include <iomanip>
+#include <iostream>
+#include <sstream>
 
-ScalarConverter::ScalarConverter(void)  {}
-ScalarConverter::ScalarConverter(const ScalarConverter &other) { (void) other; }
-ScalarConverter &ScalarConverter::operator=(const ScalarConverter &other) { (void) other; return (*this); }
+ScalarConverter::ScalarConverter(void) {}
+ScalarConverter::ScalarConverter(const ScalarConverter &other) { (void)other; }
+ScalarConverter &ScalarConverter::operator=(const ScalarConverter &other) { (void)other; return (*this); }
 ScalarConverter::~ScalarConverter(void) {}
 
-static void displayChar(long num) {
-    if (num < 0 || num > 255)
-        std::cout << "char: impossible" << std::endl;
-    else if (!((num >= 32 && num <= 126) || num == 9))
-        std::cout << "char: Non displayable" << std::endl;
-    else
-        std::cout << "char: " << "\'" << static_cast<char>(num) << "\'" << std::endl;
+static int IsInt(std::string str)
+{
+	int i = 0;
+	size_t res = 0;
+
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		if (isdigit(str[i]) == 0)
+			return (0);
+        res = res * 10 + (str[i] - '0');
+        // if (res > (size_t)2147483647 && res < (size_t)-2147483648)
+        //     return (0);
+		i++;
+	}
+	return (1);
 }
 
-static void displayInt(long num) {
-    if (num > INT_MIN && num < INT_MAX)
-        std::cout << "int: " << static_cast<int>(num) << std::endl;
-    else
-        std::cout << "int: impossible" << std::endl;
+static int IsFloat(std::string str)
+{
+	int i = 0;
+    int countF = 0;
+    int countP = 0;
+
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+        if (str[i] == '.')
+            countP++;
+        if (str[i] == 'f')
+            countF++;
+
+		if ((str[i] != 'f' && str[i] != '.') && isdigit(str[i]) == 0)
+			return (0);
+		i++;
+	}
+    if (countF > 1 || countP > 1)
+        return 0;
+
+	return (1);
 }
 
-static void displayFlaot(double num) {
-    float f = static_cast<float>(num);
-    if (f > -FLT_MAX && f < FLT_MAX)
-        std::cout << "flaot: " << f << 'f' << std::endl;
-    else
-        std::cout << "flaot: impossible" << std::endl;
-}
+static int IsDouble(std::string str)
+{
+	int i = 0;
+    int countP = 0;
 
-static void displayDouble(double num) {
-    double f = static_cast<double>(num);
-    if (f > -DBL_MAX && f < DBL_MAX)
-        std::cout << "double: " << f << 'f' << std::endl;
-    else
-        std::cout << "double: impossible" << std::endl;
-}
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+        if (str[i] == '.')
+            countP++;
 
-static void displayImposible() {
-    std::cout << "char: impossible"<< std::endl;
-    std::cout << "int: impossible" << std::endl;
-    std::cout << "float: impossible" << std::endl;
-    std::cout << "double: impossible" << std::endl;
+		if (str[i] != '.' && isdigit(str[i]) == 0)
+			return (0);
+		i++;
+	}
+
+    if (countP != 1)
+        return 0;
+
+	return (1);
 }
 
 void ScalarConverter::convert(std::string value) {
-    if (value == "nan" || value == "-inf" || value == "+inf")
-    {
+    if (value == "nan" || value == "-inf" || value == "+inf") {
         std::cout << "char: impossible" << std::endl;
         std::cout << "int: impossible" << std::endl;
         std::cout << "float: " << value << "f" << std::endl;
         std::cout << "double: " << value << std::endl;
         return ;
     }
-    if (value == "nanf" || value == "-inff" || value == "+inff")
-    {
+    if (value == "nanf" || value == "-inff" || value == "+inff") {
         std::cout << "char: impossible" << std::endl;
         std::cout << "int: impossible" << std::endl;
         std::cout << "float: " << value << std::endl;
@@ -66,57 +91,97 @@ void ScalarConverter::convert(std::string value) {
         return ;
     }
 
-    std::cout <<std::fixed << std::setprecision(1);
+    std::cout << std::fixed << std::setprecision(1);
 
-    if (value[0] == '\0' || (value.length() == 1 && std::isalpha(value[0])))
-    {
-
-        char a = (value.c_str())[0];
-        if ((value[0] > 32 && value[0] < 126) || value[0] == ' ' || value[0] == '\t')
-            std::cout << "char: " << "\'" << a << "\'" << std::endl;
+    if (value[0] == '\0' || (value.length() == 1 && !std::isdigit(value[0]))) {
+        if (value[0] > 32 && value[0] < 126)
+            std::cout << "char: " << "\'" << value[0] << "\'" << std::endl;
         else
             std::cout << "char: Non displayable" << std::endl;
-        std::cout << "int: " << static_cast<int>(a) << std::endl;
-        std::cout << "float: " << static_cast<float>(a) << "f" << std::endl;
-        std::cout << "double: " << static_cast<double>(a) << std::endl;
-        return ;
-    }
-    else
-    {
-        char *end = NULL;
-        char *point = (char *)std::strchr(value.c_str(), '.');
+        std::cout << "int: " << static_cast<int>(value[0]) << std::endl;
+        std::cout << "float: " << static_cast<float>(value[0]) << "f" << std::endl;
+        std::cout << "double: " << static_cast<double>(value[0]) << std::endl;
 
-        double num = std::strtod(value.c_str(), &end);
-        
-        if (point != NULL && *end == '\0')
-        {
-            displayChar(num);
-            displayInt(num);
-            displayFlaot(num);
-            displayDouble(num);
-            return ;
-        }
-        else if (*end == 'f' && *(end + 1) == '\0' && errno != ERANGE)
-        {
-            displayChar(num);
-            displayInt(num);
-            displayFlaot(num);
-            displayDouble(num);
-            return ;
-        }
-        else if (point == NULL)
-        {
-            long num =std::strtol(value.c_str(), &end, 10);
+        return;
+    } else {
+        size_t point = value.find('.', 0);
+        size_t floatSign = value.find('f', 0);
+        std::stringstream ss(value);
 
-            if (*end == '\0' && errno != ERANGE)
+        if (point == std::string::npos && floatSign == std::string::npos)
+        {
+            std::cout << "===========================INT " << std::endl;
+            if (IsInt(value)) 
             {
-                displayChar(num);
-                displayInt(num);
-                displayFlaot(num);
-                displayDouble(num);
-                return ;
+                int tmp = std::atoi(value.c_str());
+                if (tmp >= 32 && tmp < 126)
+                    std::cout << "char: " << "\'" << static_cast<char>(tmp) << "\'" << std::endl;
+                else
+                    std::cout << "char: Non displayable" << std::endl;
+
+                if (static_cast<long>(tmp) >= -2147483648 && static_cast<long>(tmp) <= 2147483647)
+                    std::cout << "int: " << tmp << std::endl;
+                else
+                    std::cout << "int: impossible" << std::endl;
+
+                std::cout << "float: " << static_cast<float>(tmp) << "f" << std::endl;
+                std::cout << "double: " << static_cast<double>(tmp) << std::endl;
+                return;
+            }
+        }
+        else if (floatSign != std::string::npos)
+        {
+            std::cout << "===========================FLOAT " << std::endl;
+            if (IsFloat(value))
+            {
+                value = value.substr(0, floatSign);
+                ss.str(value);
+                ss.clear();
+
+                float tmp;
+                ss >> tmp;
+
+                if (static_cast<long>(tmp) >= 32 && static_cast<long>(tmp) < 126)
+                    std::cout << "char: " << "\'" << static_cast<char>(tmp) << "\'" << std::endl;
+                else
+                    std::cout << "char: Non displayable" << std::endl;
+
+                if (static_cast<long>(tmp) >= -2147483648 && static_cast<long>(tmp) <= 2147483647)
+                    std::cout << "int: "  << static_cast<int>(tmp) << std::endl;
+                else
+                    std::cout << "int: impossible" << std::endl;
+
+                std::cout << "float: " << tmp << "f" << std::endl;
+                std::cout << "double: " << static_cast<double>(tmp) << std::endl;
+                return;
+            }
+        }
+        else if (floatSign == std::string::npos && point != std::string::npos)
+        {
+            std::cout << "===========================DOUBLE " << std::endl;
+            if (IsDouble(value))
+            {
+                double tmp;
+                ss >> tmp;
+                if (static_cast<long>(tmp) >= 32 && static_cast<long>(tmp) < 126)
+                    std::cout << "char: " << "\'" << static_cast<char>(tmp) << "\'" << std::endl;
+                else
+                    std::cout << "char: Non displayable" << std::endl;
+
+                if (static_cast<long>(tmp) >= -2147483648 && static_cast<long>(tmp) <= 2147483647)
+                    std::cout << "int: " << static_cast<int>(tmp) << std::endl;
+                else
+                    std::cout << "int: impossible" << std::endl;
+
+                std::cout << "float: " << static_cast<float>(tmp) << "f" << std::endl;
+                std::cout << "double: " << tmp << std::endl;
+                return;
             }
         }
     }
-    displayImposible();
+
+    std::cout << "char: impossible" << std::endl;
+    std::cout << "int: impossible" << std::endl;
+    std::cout << "float: impossible" << std::endl;
+    std::cout << "double: impossible" << std::endl;
 }

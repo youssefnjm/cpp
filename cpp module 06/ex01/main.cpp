@@ -9,5 +9,7 @@ int main() {
     
     std::cout << b->x << std::endl;
 
+    delete a;
+
     return (0);
 }
