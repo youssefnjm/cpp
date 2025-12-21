@@ -20,8 +20,6 @@ static int IsInt(std::string str)
 		if (isdigit(str[i]) == 0)
 			return (0);
         res = res * 10 + (str[i] - '0');
-        // if (res > (size_t)2147483647 && res < (size_t)-2147483648)
-        //     return (0);
 		i++;
 	}
 	return (1);
@@ -30,7 +28,6 @@ static int IsInt(std::string str)
 static int IsFloat(std::string str)
 {
 	int i = 0;
-    int countF = 0;
     int countP = 0;
 
 	if (str[i] == '-' || str[i] == '+')
@@ -39,14 +36,13 @@ static int IsFloat(std::string str)
 	{
         if (str[i] == '.')
             countP++;
-        if (str[i] == 'f')
-            countF++;
-
+        if (str[i] == 'f' && str[i + 1] != '\0')
+            return 0;
 		if ((str[i] != 'f' && str[i] != '.') && isdigit(str[i]) == 0)
 			return (0);
 		i++;
 	}
-    if (countF > 1 || countP > 1)
+    if (countP > 1)
         return 0;
 
 	return (1);
@@ -110,17 +106,17 @@ void ScalarConverter::convert(std::string value) {
 
         if (point == std::string::npos && floatSign == std::string::npos)
         {
-            std::cout << "===========================INT " << std::endl;
+            // std::cout << "===========================INT " << std::endl;
             if (IsInt(value)) 
             {
-                int tmp = std::atoi(value.c_str());
+                long tmp = std::atol(value.c_str());
                 if (tmp >= 32 && tmp < 126)
                     std::cout << "char: " << "\'" << static_cast<char>(tmp) << "\'" << std::endl;
                 else
                     std::cout << "char: Non displayable" << std::endl;
 
-                if (static_cast<long>(tmp) >= -2147483648 && static_cast<long>(tmp) <= 2147483647)
-                    std::cout << "int: " << tmp << std::endl;
+                if (tmp >= -2147483648 && tmp <= 2147483647)
+                    std::cout << "int: " << static_cast<int>(tmp) << std::endl;
                 else
                     std::cout << "int: impossible" << std::endl;
 
@@ -131,7 +127,7 @@ void ScalarConverter::convert(std::string value) {
         }
         else if (floatSign != std::string::npos)
         {
-            std::cout << "===========================FLOAT " << std::endl;
+            // std::cout << "===========================FLOAT " << std::endl;
             if (IsFloat(value))
             {
                 value = value.substr(0, floatSign);
@@ -158,7 +154,7 @@ void ScalarConverter::convert(std::string value) {
         }
         else if (floatSign == std::string::npos && point != std::string::npos)
         {
-            std::cout << "===========================DOUBLE " << std::endl;
+            // std::cout << "===========================DOUBLE " << std::endl;
             if (IsDouble(value))
             {
                 double tmp;
