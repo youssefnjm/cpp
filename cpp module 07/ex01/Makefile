@@ -5,7 +5,7 @@ COMPILE=c++ -Wall -Wextra -Werror -std=c++98
 SRC=main.cpp
 OBJ=$(SRC:.cpp=.o)
 
-%.o: %.cpp Whatever.hpp
+%.o: %.cpp iter.hpp
 	$(COMPILE) -c $< -o $@
 
 all: $(NAME)

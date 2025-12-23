@@ -8,7 +8,7 @@
 int main()
 {
     try {
-        Bureaucrat b("b1", 5);
+        Bureaucrat b("b1", 1);
         std::cout << "Bureaucrat: " << b << std::endl;
 
         std::cout << std::endl;
