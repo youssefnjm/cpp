@@ -19,31 +19,31 @@ int main()
 
     std::cout << std::endl;
 
-    try {
-        Bureaucrat b("b1", 200);
+    // try {
+    //     Bureaucrat b("b1", 200);
 
-        std::cout << b << std::endl;
-        b.incrementGrade();
-        std::cout << b << std::endl;
-    } 
-    catch (std::exception &e) {
-        std::cout << "exception from b: " << e.what() << std::endl;
-    }
+    //     std::cout << b << std::endl;
+    //     b.incrementGrade();
+    //     std::cout << b << std::endl;
+    // } 
+    // catch (std::exception &e) {
+    //     std::cout << "exception from b: " << e.what() << std::endl;
+    // }
 
-    std::cout << std::endl;
+    // std::cout << std::endl;
 
-    try {
-        Bureaucrat c("b2", 1);
+    // try {
+    //     Bureaucrat c("b2", 1);
 
-        std::cout << c << std::endl;
-        c.decrementGrade();
-        std::cout << c << std::endl;
-        c.incrementGrade();
-        c.incrementGrade();
-    } 
-    catch (std::exception &e) {
-        std::cout << "exception from c: " << e.what() << std::endl;
-    }
+    //     std::cout << c << std::endl;
+    //     c.decrementGrade();
+    //     std::cout << c << std::endl;
+    //     c.incrementGrade();
+    //     c.incrementGrade();
+    // } 
+    // catch (std::exception &e) {
+    //     std::cout << "exception from c: " << e.what() << std::endl;
+    // }
 
     return (0);
 }

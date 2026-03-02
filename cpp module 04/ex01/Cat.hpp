@@ -9,7 +9,7 @@ class Cat : public Animal
         Brain *brain;
     public:
         Cat(void);
-        Cat(const Cat& other);
+        Cat(const Cat &other);
         Cat &operator=(const Cat &other);
         ~Cat();
 
@@ -20,4 +20,3 @@ class Cat : public Animal
 };
 
 #endif
-

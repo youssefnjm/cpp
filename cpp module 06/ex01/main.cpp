@@ -1,15 +1,18 @@
 #include "./Serializer.hpp"
 
 int main() {
-    Data *a = new Data();    
-    a->x = 5;
+    Data *data = new Data();
+    data->x = 5;
 
-    uintptr_t k = Serializer::serialize(a);
-    Data *b = Serializer::deserialize(k);
+    uintptr_t address = Serializer::serialize(data);
+
+    std::cout << "address: " << address << "\n";
+
+    Data *ptr = Serializer::deserialize(address);
     
-    std::cout << b->x << std::endl;
+    std::cout << "after cast: " << ptr->x << "\n";
 
-    delete a;
+    delete data;
 
     return (0);
 }

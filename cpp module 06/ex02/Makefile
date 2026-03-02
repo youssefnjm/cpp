@@ -2,7 +2,7 @@ NAME=a.out
 
 COMPILE=c++ -Wall -Wextra -Werror -std=c++98
 
-SRC=Base.cpp A.cpp B.cpp C.cpp main.cpp
+SRC=Base.cpp main.cpp
 OBJ=$(SRC:.cpp=.o)
 
 %.o: %.cpp Base.hpp A.hpp B.hpp C.hpp

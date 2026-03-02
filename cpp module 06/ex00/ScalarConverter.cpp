@@ -1,4 +1,5 @@
 #include "ScalarConverter.hpp"
+#include <cstddef>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -73,111 +74,107 @@ static int IsDouble(std::string str)
 
 void ScalarConverter::convert(std::string value) {
     if (value == "nan" || value == "-inf" || value == "+inf") {
-        std::cout << "char: impossible" << std::endl;
-        std::cout << "int: impossible" << std::endl;
-        std::cout << "float: " << value << "f" << std::endl;
-        std::cout << "double: " << value << std::endl;
+        std::cout << "char:   impossible" << "\n";
+        std::cout << "int:    impossible" << "\n";
+        std::cout << "float:  " << value << "f" << "\n";
+        std::cout << "double: " << value << "\n";
         return ;
     }
     if (value == "nanf" || value == "-inff" || value == "+inff") {
-        std::cout << "char: impossible" << std::endl;
-        std::cout << "int: impossible" << std::endl;
-        std::cout << "float: " << value << std::endl;
-        std::cout << "double: " << value.substr(0, 4) << std::endl;
+        std::cout << "char:   impossible" << "\n";
+        std::cout << "int:    impossible" << "\n";
+        std::cout << "float:  " << value << "\n";
+        std::cout << "double: " << value.substr(0, 4) << "\n";
         return ;
     }
 
     std::cout << std::fixed << std::setprecision(1);
+    errno = 0;
 
     if (value[0] == '\0' || (value.length() == 1 && !std::isdigit(value[0]))) {
         if (value[0] > 32 && value[0] < 126)
-            std::cout << "char: " << "\'" << value[0] << "\'" << std::endl;
+            std::cout << "char:   " << "\'" << value[0] << "\'" << "\n";
         else
-            std::cout << "char: Non displayable" << std::endl;
-        std::cout << "int: " << static_cast<int>(value[0]) << std::endl;
-        std::cout << "float: " << static_cast<float>(value[0]) << "f" << std::endl;
-        std::cout << "double: " << static_cast<double>(value[0]) << std::endl;
+            std::cout << "char:   Non displayable" << "\n";
+        std::cout << "int:    " << static_cast<int>(value[0]) << "\n";
+        std::cout << "float:  " << static_cast<float>(value[0]) << "f" << "\n";
+        std::cout << "double: " << static_cast<double>(value[0]) << "\n";
 
-        return;
-    } else {
-        size_t point = value.find('.', 0);
-        size_t floatSign = value.find('f', 0);
-        std::stringstream ss(value);
-
-        if (point == std::string::npos && floatSign == std::string::npos)
-        {
-            // std::cout << "===========================INT " << std::endl;
-            if (IsInt(value)) 
-            {
-                long tmp = std::atol(value.c_str());
-                if (tmp >= 32 && tmp < 126)
-                    std::cout << "char: " << "\'" << static_cast<char>(tmp) << "\'" << std::endl;
-                else
-                    std::cout << "char: Non displayable" << std::endl;
-
-                if (tmp >= -2147483648 && tmp <= 2147483647)
-                    std::cout << "int: " << static_cast<int>(tmp) << std::endl;
-                else
-                    std::cout << "int: impossible" << std::endl;
-
-                std::cout << "float: " << static_cast<float>(tmp) << "f" << std::endl;
-                std::cout << "double: " << static_cast<double>(tmp) << std::endl;
-                return;
-            }
-        }
-        else if (floatSign != std::string::npos)
-        {
-            // std::cout << "===========================FLOAT " << std::endl;
-            if (IsFloat(value))
-            {
-                value = value.substr(0, floatSign);
-                ss.str(value);
-                ss.clear();
-
-                float tmp;
-                ss >> tmp;
-
-                if (static_cast<long>(tmp) >= 32 && static_cast<long>(tmp) < 126)
-                    std::cout << "char: " << "\'" << static_cast<char>(tmp) << "\'" << std::endl;
-                else
-                    std::cout << "char: Non displayable" << std::endl;
-
-                if (static_cast<long>(tmp) >= -2147483648 && static_cast<long>(tmp) <= 2147483647)
-                    std::cout << "int: "  << static_cast<int>(tmp) << std::endl;
-                else
-                    std::cout << "int: impossible" << std::endl;
-
-                std::cout << "float: " << tmp << "f" << std::endl;
-                std::cout << "double: " << static_cast<double>(tmp) << std::endl;
-                return;
-            }
-        }
-        else if (floatSign == std::string::npos && point != std::string::npos)
-        {
-            // std::cout << "===========================DOUBLE " << std::endl;
-            if (IsDouble(value))
-            {
-                double tmp;
-                ss >> tmp;
-                if (static_cast<long>(tmp) >= 32 && static_cast<long>(tmp) < 126)
-                    std::cout << "char: " << "\'" << static_cast<char>(tmp) << "\'" << std::endl;
-                else
-                    std::cout << "char: Non displayable" << std::endl;
-
-                if (static_cast<long>(tmp) >= -2147483648 && static_cast<long>(tmp) <= 2147483647)
-                    std::cout << "int: " << static_cast<int>(tmp) << std::endl;
-                else
-                    std::cout << "int: impossible" << std::endl;
-
-                std::cout << "float: " << static_cast<float>(tmp) << "f" << std::endl;
-                std::cout << "double: " << tmp << std::endl;
-                return;
-            }
-        }
+        return ;
     }
 
-    std::cout << "char: impossible" << std::endl;
-    std::cout << "int: impossible" << std::endl;
-    std::cout << "float: impossible" << std::endl;
-    std::cout << "double: impossible" << std::endl;
+    size_t point = value.find('.', 0);
+    size_t floatSign = value.find('f', 0);
+    std::stringstream ss(value);
+
+    if (point == std::string::npos && floatSign == std::string::npos && IsInt(value))
+    {
+        // std::cout << "===========================INT " << "\n";
+        long long tmp = std::strtol(value.c_str(), NULL, 10);
+        if (errno != ERANGE) {
+            if (tmp >= 32 && tmp < 126)
+                std::cout << "char:   " << "\'" << static_cast<char>(tmp) << "\'" << "\n";
+            else
+                std::cout << "char:   Non displayable" << "\n";
+
+            if (tmp >= -2147483648 && tmp <= 2147483647)
+                std::cout << "int:    " << static_cast<int>(tmp) << "\n";
+            else
+                std::cout << "int:    impossible" << "\n";
+
+            std::cout << "float:  " << static_cast<float>(tmp) << "f" << "\n";
+            std::cout << "double: " << static_cast<double>(tmp) << "\n";
+            
+            return;
+        }
+    }
+    else if (floatSign != std::string::npos && IsFloat(value))
+    {
+        // std::cout << "===========================FLOAT " << "\n";
+        value = value.substr(0, floatSign);
+        ss.str(value);
+        ss.clear();
+
+        float tmp;
+        ss >> tmp;
+
+        if (static_cast<long>(tmp) >= 32 && static_cast<long>(tmp) < 126)
+            std::cout << "char:   " << "\'" << static_cast<char>(tmp) << "\'" << "\n";
+        else
+            std::cout << "char:   Non displayable" << "\n";
+
+        if (static_cast<long>(tmp) >= -2147483648 && static_cast<long>(tmp) <= 2147483647)
+            std::cout << "int:    "  << static_cast<int>(tmp) << "\n";
+        else
+            std::cout << "int:    impossible" << "\n";
+
+        std::cout << "float:  " << tmp << "f" << "\n";
+        std::cout << "double: " << static_cast<double>(tmp) << "\n";
+        return;
+    }
+    else if (floatSign == std::string::npos && point != std::string::npos && IsDouble(value))
+    {
+        // std::cout << "===========================DOUBLE " << "\n";
+        double tmp;
+        ss >> tmp;
+        if (static_cast<long>(tmp) >= 32 && static_cast<long>(tmp) < 126)
+            std::cout << "char:   " << "\'" << static_cast<char>(tmp) << "\'" << "\n";
+        else
+            std::cout << "char:   Non displayable" << "\n";
+
+        if (static_cast<long>(tmp) >= -2147483648 && static_cast<long>(tmp) <= 2147483647)
+            std::cout << "int:    " << static_cast<int>(tmp) << "\n";
+        else
+            std::cout << "int:    impossible" << "\n";
+
+        std::cout << "float:  " << static_cast<float>(tmp) << "f" << "\n";
+        std::cout << "double: " << tmp << "\n";
+        return;
+    }
+    
+
+    std::cout << "char:   impossible" << "\n";
+    std::cout << "int:    impossible" << "\n";
+    std::cout << "float:  impossible" << "\n";
+    std::cout << "double: impossible" << "\n";
 }
