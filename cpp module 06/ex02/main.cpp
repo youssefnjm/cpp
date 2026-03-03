@@ -45,7 +45,7 @@ void identify(Base& p) {
             try
             {
                 C c = dynamic_cast<C&>(p);
-                std::cout << 'B' << "\n";
+                std::cout << 'C' << "\n";
             }
             catch (std::exception &e)
             {

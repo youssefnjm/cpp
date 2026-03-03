@@ -1,4 +1,5 @@
 #include "ScalarConverter.hpp"
+#include <algorithm>
 #include <cstddef>
 #include <iomanip>
 #include <iostream>
@@ -84,7 +85,10 @@ void ScalarConverter::convert(std::string value) {
         std::cout << "char:   impossible" << "\n";
         std::cout << "int:    impossible" << "\n";
         std::cout << "float:  " << value << "\n";
-        std::cout << "double: " << value.substr(0, 4) << "\n";
+        if (value == "nanf")
+            std::cout << "double: " << value.substr(0, 3) << "\n";
+        else
+            std::cout << "double: " << value.substr(0, 4) << "\n";
         return ;
     }
 
