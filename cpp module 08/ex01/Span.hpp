@@ -1,14 +1,14 @@
 #ifndef SPAN_HPP
 # define SPAN_HPP
 #include <cstddef>
-# include <iostream>
+// # include <iostream>
+#include <vector>
 
 class Span
 {
     private:
-        size_t pos;
         size_t size;
-        int *arr;
+        std::vector<long> arr;
     public:
         Span(void);
         Span(unsigned int n);
@@ -20,6 +20,17 @@ class Span
         void addMore(int num);
         int shortestSpan();
         int longestSpan();
+
+        template<typename T>
+        void addRange(T begin, T end) {
+            if (begin == end)
+                return ;
+            T tmp = begin;
+            while (tmp != end) {
+                this->addNumber(*tmp);
+                tmp++;
+            }
+        };
 
         class ContainerIsFull : public std::exception {
             const char* what() const throw();

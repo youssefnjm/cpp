@@ -1,11 +1,11 @@
 #include "easyfind.hpp"
-#include <cstddef>
-#include <exception>
 #include <vector>
+#include <iostream>
 
 #define ARRAY_SIZE 10
 
-int main( void ) {
+int main( void )
+{
     try {
         std::vector<int> vecInt;
 
@@ -16,12 +16,12 @@ int main( void ) {
         findInt = ARRAY_SIZE / 2;
 
         int valInt = easyfind(vecInt, findInt);
-        std::cout << "value wanna be found: " << findInt << ", founded value: " << valInt << std::endl;
-    } catch (std::exception &e) {
+        std::cout << ", founded value: " << valInt << std::endl;
+    }
+    catch (std::exception &e) {
         std::cout << e.what() << std::endl;
     }
     
-
     try {
         std::vector<long long > vecLong;
         int find;
@@ -34,8 +34,10 @@ int main( void ) {
         long long val = easyfind(vecLong, find);
         std::cout << "value wanna be found: " << find << " founded value: " << val << std::endl;
     
-    } catch (std::exception &e) {
+    }
+    catch (std::exception &e) {
         std::cout << e.what() << std::endl;
     }
+
     return 0;
 }

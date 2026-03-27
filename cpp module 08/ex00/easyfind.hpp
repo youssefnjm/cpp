@@ -2,7 +2,6 @@
 # define WHATEVER_HPP
 #include <cstddef>
 #include <exception>
-# include <iostream>
 
 class ValueNotFound : public std::exception {
     const char* what() const throw() {

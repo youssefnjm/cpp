@@ -1,48 +1,38 @@
 #include "Span.hpp"
 #include <cstddef>
 
-Span::Span(void) : pos(0), size(0), arr(NULL) {}
+Span::Span(void) : size(0) {}
 
-Span::Span(unsigned int n) : pos(0), size(n), arr(new int[n]) {}
+Span::Span(unsigned int n) : size(n) {}
 
 Span::Span(const Span &other)
 {
-    arr = NULL;
     size = other.size;
-    pos = 0;
     *this = other;
 }
 
 Span &Span::operator=(const Span &other)
 {
     if (this != &other) {
-        delete[] arr;
-
-        arr = new int[size];
-        
-        for (; pos < size; pos++) {
-            arr[pos] = other.arr[pos];
+        for (size_t i = 0; i < other.arr.size(); i++) {
+            arr[i] = other.arr[i];
         }
     }
     return (*this);
 }
 
-Span::~Span(void)
-{
-    delete[] arr; 
-}
+Span::~Span(void) {}
 
 const char* Span::ContainerIsFull::what() const throw() {
-    return "no span can be found.";
+    return "Container is full !!";
 };
 const char* Span::NoSpanFound::what() const throw() {
     return "no span can be found.";
 };
 
 void Span::addNumber(int num) {
-    if (this->pos < this->size) {
-        this->arr[this->pos] = num;
-        this->pos++;
+    if (this->arr.size() < this->size) {
+        this->arr.push_back(num);
         return;
     }
     throw Span::ContainerIsFull();
@@ -85,3 +75,4 @@ int Span::longestSpan() {
     }
     return max;
 };
+
