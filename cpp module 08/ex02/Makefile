@@ -5,7 +5,7 @@ COMPILE=c++ -Wall -Wextra -Werror -std=c++98
 SRC=main.cpp
 OBJ=$(SRC:.cpp=.o)
 
-%.o: %.cpp Array.hpp
+%.o: %.cpp MutantStack.hpp
 	$(COMPILE) -c $< -o $@
 
 all: $(NAME)
