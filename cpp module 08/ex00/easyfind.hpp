@@ -1,21 +1,23 @@
 #ifndef WHATEVER_HPP
 # define WHATEVER_HPP
-#include <cstddef>
+#include <algorithm>
 #include <exception>
 
-class ValueNotFound : public std::exception {
+class ValueNotFound : public std::exception
+{
     const char* what() const throw() {
         return "value not found!!";
-    }
+    };
 };
 
-template <typename T> int easyfind(T &x, int y)
+template <typename T> int easyfind(T &container, int val)
 {
-    for (size_t i = 0; i < x.size(); i++) {
-        if (y == x[i])
-            return x[i];
-    }
-    throw ValueNotFound();
+    typename T::iterator res = std::find(container.begin(), container.end(), val);
+
+    if (res == container.end())
+        throw ValueNotFound();
+
+    return *res;
 }
 
 #endif

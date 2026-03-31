@@ -1,13 +1,13 @@
 #ifndef SPAN_HPP
 # define SPAN_HPP
-#include <cstddef>
-#include <vector>
+# include <cstddef>
+# include <vector>
 
 class Span
 {
     private:
         size_t size;
-        std::vector<long> arr;
+        std::vector<int> arr;
     public:
         Span(void);
         Span(unsigned int n);
