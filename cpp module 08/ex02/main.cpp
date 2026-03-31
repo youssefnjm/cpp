@@ -1,5 +1,10 @@
 #include "MutantStack.hpp"
+#include <algorithm>
+#include <cstddef>
+#include <deque>
 #include <iostream>
+#include <list>
+#include <vector>
 #define MAX_VAL 10
 
 int main()
@@ -33,6 +38,54 @@ int main()
     }
 
     std::stack<int> s(mstack);
+
+
+    // std::vector<std::string> array = { "bmw", "audi", "mercideces", "dacia" };
+
+    // std::cout << "-------------MutantStack-------------" << std::endl;
+    // MutantStack<std::string> mstack;
+
+    // mstack.push("bmw");
+    // mstack.push("audi");
+    // mstack.push("mercideces");
+    // mstack.push("dacia");
+
+    // MutantStack<std::string>::iterator it = mstack.begin();
+    // MutantStack<std::string>::iterator itEnd =  mstack.end();
+    // *it = "volkswagen";
+
+    // while (it != itEnd) {
+    //     *it = "dacia";
+    //     it++;
+    // }
+
+    // it = mstack.begin();
+    // while (it != itEnd) {
+    //     std::cout << *it << " | ";
+    //     ++it;
+    // }
+    
+    // std::cout << "\n-------------vector-------------" << std::endl;
+    // std::vector<std::string> s;
+    // s.push_back("bmw");
+    // s.push_back("audi");
+    // s.push_back("mercideces");
+    // s.push_back("dacia");
+
+    // MutantStack<std::string>::iterator itt = mstack.begin();
+    // MutantStack<std::string>::iterator ittEnd =  mstack.end();
+
+    // *itt = "volkswagen";
+
+    // while (itt != ittEnd) {
+    //     *itt = "dacia";
+    //     itt++;
+    // }
+    // itt = mstack.begin();
+    // while (itt != ittEnd) {
+    //     std::cout << *itt << " | ";
+    //     ++itt;
+    // }
 
     return 0;
 }
