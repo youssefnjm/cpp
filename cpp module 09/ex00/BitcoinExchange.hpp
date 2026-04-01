@@ -1,6 +1,6 @@
 #ifndef BITCOINEXCHANGE_HPP
 # define BITCOINEXCHANGE_HPP
-#include <string>
+#include <iostream>
 
 class BitcoinExchange
 {
@@ -10,7 +10,7 @@ class BitcoinExchange
         BitcoinExchange &operator=(const BitcoinExchange &other);
         ~BitcoinExchange();
 
-        static void CalcValues(std::string input);
+        static void ShowValues(std::string input);
 };
 
 #endif

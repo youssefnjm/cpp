@@ -7,7 +7,7 @@ int main (int ac, char **av) {
         return 1;
     }
 
-    BitcoinExchange::CalcValues(av[1]);
+    BitcoinExchange::ShowValues(av[1]);
     
     return 0;
 }
