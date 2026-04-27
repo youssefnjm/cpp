@@ -1,8 +1,6 @@
 #ifndef ARRAY_HPP
 # define ARRAY_HPP
 #include <cstddef>
-#include <exception>
-# include <iostream>
 #include <stdexcept>
 
 
@@ -39,6 +37,11 @@ template <typename T> class Array {
         }
 
         T& operator[](size_t idx) {
+            if (idx >= this->size)
+                throw std::out_of_range ("indx out of range");
+            return this->arr[idx];
+        }
+        T operator[](size_t idx) const {
             if (idx >= this->size)
                 throw std::out_of_range ("indx out of range");
             return this->arr[idx];

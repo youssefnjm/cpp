@@ -1,27 +1,29 @@
 #include "iter.hpp"
-#include <array>
+#include <iostream>
 
-void fun(int &a) {
-    std::cout << a << " ";
-    a += 10;
+#define ARR_SIZE 5
+
+void MultiplieByTen(int &n1) {
+    n1 = n1 * 10;
 }
 
 int main() {
-    std::array<int, 5> arr;
+    int arr[ARR_SIZE];
 
-    for (size_t i = 0; i < arr.size(); i++)
+    for (int i = 0; i < ARR_SIZE; i++)
         arr[i] = i;
 
-    for (size_t i = 0; i < arr.size(); i++)
+    std::cout << "before: ";
+    for (size_t i = 0; i < ARR_SIZE; i++)
         std::cout << arr[i] << " ";
 
-    std::cout << std::endl;
+    std::cout << "\n";
 
-    iter(&arr[0], 5, fun);
+    iter(arr, 5, MultiplieByTen);
 
-    std::cout << std::endl;
+    std::cout << "\nafter: ";
+    for (size_t i = 0; i < ARR_SIZE; i++)
+        std::cout << arr[i] << " ";
 
-    for (size_t i = 0; i < arr.size(); i++)
-        std::cout << arr[i] << " " << std::endl;
     return 0;
 }
