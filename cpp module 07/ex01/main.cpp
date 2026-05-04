@@ -3,8 +3,9 @@
 
 #define ARR_SIZE 5
 
-void MultiplieByTen(int &n1) {
-    n1 = n1 * 10;
+void MultiplieByTen(const int &n1) {
+    (void)n1;
+    // n1 = n1 * 10;
 }
 
 int main() {
