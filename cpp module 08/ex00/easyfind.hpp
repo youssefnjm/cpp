@@ -10,14 +10,13 @@ class ValueNotFound : public std::exception
     };
 };
 
-template <typename T> int easyfind(T &container, int val)
+template <typename T>
+int easyfind(T &container, int val)
 {
-    typename T::iterator res = std::find(container.begin(), container.end(), val);
-
-    if (res == container.end())
+    if (std::find(container.begin(), container.end(), val) == container.end())
         throw ValueNotFound();
 
-    return *res;
+    return val;
 }
 
 #endif

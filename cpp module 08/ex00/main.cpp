@@ -20,7 +20,7 @@ int main( void )
         }
 
         int valInt = easyfind(conatiner, FIND_VAL);
-        std::cout << "founded value: " << valInt << std::endl;
+        std::cout << "founded value from vector: " << valInt << std::endl;
     }
     catch (std::exception &e) {
         std::cout << e.what() << std::endl;
@@ -35,7 +35,7 @@ int main( void )
         }
 
         int valInt = easyfind(conatiner, FIND_VAL);
-        std::cout << "founded value: " << valInt << std::endl;
+        std::cout << "founded value from list: " << valInt << std::endl;
     }
     catch (std::exception &e) {
         std::cout << e.what() << std::endl;
@@ -50,7 +50,7 @@ int main( void )
         }
 
         int valInt = easyfind(conatiner, FIND_VAL);
-        std::cout << "founded value: " << valInt << std::endl;
+        std::cout << "founded value from deque: " << valInt << std::endl;
     }
     catch (std::exception &e) {
         std::cout << e.what() << std::endl;
