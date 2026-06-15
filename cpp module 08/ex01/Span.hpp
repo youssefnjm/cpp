@@ -1,6 +1,7 @@
 #ifndef SPAN_HPP
 # define SPAN_HPP
 # include <cstddef>
+#include <iterator>
 # include <vector>
 
 class Span
@@ -16,19 +17,15 @@ class Span
         ~Span();
 
         void addNumber(int num);
-        void addMore(int num);
         int shortestSpan();
         int longestSpan();
 
         template<typename T>
         void addRange(T begin, T end) {
-            if (begin == end)
-                return ;
-            T tmp = begin;
-            while (tmp != end) {
-                this->addNumber(*tmp);
-                tmp++;
-            }
+            if (this->arr.size() + (size_t)std::distance(begin, end) > this->size)
+                throw ContainerIsFull();
+
+            arr.insert(arr.end(), begin, end);
         };
 
         class ContainerIsFull : public std::exception {

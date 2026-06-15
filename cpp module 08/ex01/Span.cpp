@@ -1,53 +1,46 @@
 #include "Span.hpp"
 #include <algorithm>
-#include <cstddef>
 #include <vector>
 
 Span::Span(void) : size(0) {}
-
 Span::Span(unsigned int n) : size(n) {}
-
 Span::Span(const Span &other) { *this = other; }
-
 Span &Span::operator=(const Span &other)
 {
     if (this != &other) {
-        size = other.size;
-
-        for (size_t i = 0; i < other.arr.size(); i++) {
-            arr[i] = other.arr[i];
-        }
+        this->size = other.size;
+        this->arr = other.arr;
     }
     return (*this);
 }
-
 Span::~Span(void) {}
 
 const char* Span::ContainerIsFull::what() const throw() {
     return "Container is full !!";
 };
 const char* Span::NoSpanFound::what() const throw() {
-    return "no span can be found.";
+    return "No span can be found.";
 };
 
 void Span::addNumber(int num) {
     if (this->arr.size() < this->size) {
         this->arr.push_back(num);
-        return;
+        return ;
     }
     throw Span::ContainerIsFull();
 }
 
 int Span::shortestSpan() {
-    if (this->size <= 1)
+    if (this->arr.size() <= 1)
         throw Span::NoSpanFound();
 
-    std::sort(this->arr.begin(), this->arr.end());
-    int min = this->arr[1] - this->arr[0];
+    std::vector<int> copy = this->arr;
+    std::sort(copy.begin(), copy.end());
+    int min = copy[1] - copy[0];
 
-    for (size_t i = 0; i < (this->arr.size() - 1); i++) {
-        if (arr[i + 1] - arr[i] < min)
-            min = arr[i + 1] - arr[i];
+    for (size_t i = 0; i < (copy.size() - 1); i++) {
+        if (copy[i + 1] - copy[i] < min)
+            min = copy[i + 1] - copy[i];
     }
 
     return min;
