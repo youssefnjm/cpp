@@ -24,42 +24,6 @@ static void ft_strtrim(std::string& str, char del) {
     str = str.substr(start, end - start + 1);
 }
 
-static void getData(std::map<std::string, std::string>& data) {
-    std::ifstream dataFile("data.csv");
-    if (!dataFile.is_open())
-        throw std::runtime_error("can't open file!");
-
-    std::string buffer;
-    bool skipHeader = true;
-    while (std::getline(dataFile, buffer, '\n'))
-    {
-        if (skipHeader) {
-            skipHeader = false;
-            continue;
-        }
-
-        std::stringstream ss(buffer);
-        std::map<int, std::string> words;
-
-        int countWords = 0;
-        std::string word;
-        while (std::getline(ss, word, ',')) {
-            ft_strtrim(word, ' ');
-            if (word.empty()) {
-                throw std::runtime_error("unvalid syntax format in csv file");
-            }
-            words[countWords++] = word;
-        }
-
-        if (countWords != 2) {
-            throw std::runtime_error("Unvalid column number in csv file");
-        }
-
-        data[words[0]] = words[1];
-    }
-
-}
-
 static void isDate(std::string date) {
     std::stringstream ss(date);
 
@@ -86,29 +50,16 @@ static void isNumber(std::string val, int flag) {
     double value = std::strtod(val.c_str(), &end);
 
     if (*end != '\0')
-        throw std::runtime_error("Unvalid value: " + val);
+        throw std::runtime_error("Unvalid value (contain chars): " + val);
 
     if (errno == ERANGE)
-        throw std::runtime_error("Unvalid value: " + val);
+        throw std::runtime_error("Unvalid value (overflow): " + val);
 
     if (flag && (value < 0 || value > 1000))
         throw std::runtime_error("Unvalid value (out of range): " + val);
 }
 
-static void checkData(std::map<std::string, std::string> &data)
-{
-    std::map<std::string, std::string>::iterator it = data.begin();
-    std::map<std::string, std::string>::iterator itEnd = data.end();
-
-    while (it != itEnd) {
-        isDate(it->first);
-        isNumber(it->second, 0);
-        it++;
-    }
-}
-
-static double getValue(std::map<std::string, std::string>& data, std::string &date)
-{
+static double getValue(std::map<std::string, std::string>& dataBase, std::string &date) {
     std::stringstream ss(date);
     int year, month, day;
     char dash1, dash2;
@@ -124,11 +75,11 @@ static double getValue(std::map<std::string, std::string>& data, std::string &da
 
     std::string formatedDate = ss.str();
     
-    std::map<std::string, std::string>::iterator it = data.lower_bound(formatedDate);
-    if (it != data.end() && (it->first == formatedDate))
+    std::map<std::string, std::string>::iterator it = dataBase.lower_bound(formatedDate);
+    if (it != dataBase.end() && (it->first == formatedDate))
         return std::strtod(it->second.c_str(), NULL);
     
-    if (it == data.begin())
+    if (it == dataBase.begin())
         return -1;
     
     it--;
@@ -136,48 +87,72 @@ static double getValue(std::map<std::string, std::string>& data, std::string &da
     return std::strtod(it->second.c_str(), NULL);
 }
 
-void BitcoinExchange::ShowValues(std::string fileName) {
-    std::map<std::string, std::string> data;
+static std::map<std::string, std::string> getData() {
+    std::map<std::string, std::string> dataBase;
 
-    // store data
-    try {
-        getData(data);
-        checkData(data);
+    std::ifstream dataBaseFile("data.csv");
+    if (!dataBaseFile.is_open())
+        throw std::runtime_error("can't open file!");
+
+    std::string buffer;
+    if (!std::getline(dataBaseFile, buffer, '\n'))
+        throw std::runtime_error("file is empty!");
+
+    while (std::getline(dataBaseFile, buffer, '\n')) {
+
+        std::stringstream ss(buffer);
+        std::map<int, std::string> row;
+
+        int countColumn = 0;
+        std::string column;
+        while (std::getline(ss, column, ',')) {
+            
+            if (column.empty())
+                throw std::runtime_error("unvalid syntax format in csv database");
+
+            row[countColumn++] = column;
+        }
+
+        if (countColumn != 2) {
+            throw std::runtime_error("Unvalid column number in csv database");
+        }
+
+        dataBase[row[0]] = row[1];
     }
-    catch (std::exception &err) {
-        std::cerr << "Error: unvalid argument in .csv file => " << err.what() << std::endl;
-        return ;
+    return dataBase;
+}
+
+void BitcoinExchange::ShowValues(std::string fileName) {
+    // store data from datavbase
+    std::map<std::string, std::string> dataBase = getData();
+    
+    std::map<std::string, std::string>::iterator dataBaseIt = dataBase.begin();
+    std::map<std::string, std::string>::iterator dataBaseitEnd = dataBase.end();
+    while (dataBaseIt != dataBaseitEnd) {
+        isDate(dataBaseIt->first);
+        isNumber(dataBaseIt->second, 0);
+        dataBaseIt++;
     }
 
     // get values
     std::ifstream inputFile(fileName);
-    if (!inputFile.is_open()) {
-        std::cerr << "Error: can't open file.\n";
-        return ;
-    }
+    if (!inputFile.is_open())
+        throw std::runtime_error("Error: can't open file.");
 
     std::string buffer;
-    bool skipHeader = true;
-    while (std::getline(inputFile, buffer, '\n'))
-    {
-        if (skipHeader) {
-            skipHeader = false;
-            continue ;
-        }
+    if (!std::getline(inputFile, buffer, '\n'))
+        throw std::runtime_error("Error: input file is empty!");
 
+    while (std::getline(inputFile, buffer, '\n')) {
         std::stringstream ss(buffer);
-        std::string word;
+        std::map<int, std::string> row;
+        std::string column;
         int countCol = 0;
-        std::string row[2];
 
-        while (std::getline(ss, word, '|'))
+        while (std::getline(ss, column, '|'))
         {
-            ft_strtrim(word, ' ');
-            if (countCol >= 2) {
-                countCol++;
-                break ;
-            }
-            row[countCol++] = word;
+            ft_strtrim(column, ' ');
+            row[countCol++] = column;
         }
 
         if (countCol != 2) {
@@ -193,9 +168,11 @@ void BitcoinExchange::ShowValues(std::string fileName) {
             continue ;
         }
 
-        double value = getValue(data, row[0]);
+        double value = getValue(dataBase, row[0]);
 
-        std::cout << row[0] << " => " << row[1] << " = " << (std::strtod(row[1].c_str(), NULL) * value) << std::endl;
-
+        std::cout << row[0] 
+                << " => " << row[1]
+                << " = " << (std::strtod(row[1].c_str(), NULL) * value)
+                << std::endl;
     }
 }

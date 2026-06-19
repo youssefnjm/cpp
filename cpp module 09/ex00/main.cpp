@@ -1,13 +1,19 @@
 #include "BitcoinExchange.hpp"
-#include <iostream>
+#include <stdexcept>
 
-int main (int ac, char **av) {
-    if (ac != 2) {
-        std::cerr << "Error: unvalid argument number" << std::endl;
-        return 1;
+int main (int ac, char **av)
+{
+    try {
+
+        if (ac != 2)
+            throw std::runtime_error("Error: unvalid argument number");
+
+        BitcoinExchange::ShowValues(av[1]);
+    
+    } catch (std::exception &exp) {
+        std::cerr << exp.what() << std::endl;
+        return 1; 
     }
-
-    BitcoinExchange::ShowValues(av[1]);
     
     return 0;
 }
