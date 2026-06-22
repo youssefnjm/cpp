@@ -1,8 +1,10 @@
 #include "PmergeMe.hpp"
+#include <algorithm>
 #include <cerrno>
 #include <cstddef>
 #include <ctime>
 #include <deque>
+#include <iterator>
 #include <stdexcept>
 #include <utility>
 #include <vector>
@@ -18,21 +20,6 @@ time_t getTime(void) {
     return std::time(NULL) * 1000000;
 }
 
-// void sortDeque(std::deque<int> sequence) {
-//     std::vector<std::pair<int, int> > seqDeque;
-//     int straggler = -1;
-    
-//     if (sequence.size() % 2 == 0) {
-//         for (size_t i = 0; i < sequence.size(); i++)
-//             seqDeque.push_back(std::make_pair(sequence[i], sequence[i + 1]));
-//     } else {
-//         straggler = sequence.back();
-        
-//         for (size_t i = 0; i < sequence.size() - 1; i++)
-//             seqDeque.push_back(std::make_pair(sequence[i], sequence[i + 1]));
-//     }
-// };
-
 // std::deque<int> vectorToDeque(std::vector<int> sequence) {
 //     std::deque<int> deque;
 
@@ -42,78 +29,130 @@ time_t getTime(void) {
 //     return deque;
 // };
 
-void inserLosers(std::vector<int> &winners, std::vector<std::pair<int, int> > &losers) {
-    for (size_t i = 0; i < losers.size(); i++) {
-        std::vector<int>::iterator pairesWinner = std::find(winners.begin(), winners.end(), losers[i].second);
+std::vector<size_t> JacobsthalSequence(size_t vecPairSize) {
+    std::vector<size_t> JacSeq;
 
-        winners.insert(pairesWinner, losers[i].first);
+    JacSeq.push_back(0);
+    JacSeq.push_back(1);
+    while (JacSeq.back() < vecPairSize) {
+        size_t res = JacSeq[JacSeq.size() - 1] + 2 * JacSeq[JacSeq.size() - 2];
+        JacSeq.push_back(res);
+    }
+    return JacSeq;
+}
+
+std::vector<size_t> InsertOrder(std::vector<size_t>& JacSeq, size_t vecPairSize) {
+    std::vector<size_t> order;
+    order.push_back(0);
+
+    for (size_t i = 3; i < JacSeq.size(); i++) {
+        size_t first = JacSeq[i] - 1;
+        size_t second = JacSeq[i - 1];
+
+        if (first >= vecPairSize)
+            first = vecPairSize - 1;
+
+        std::cout << "first: " << first << " second: " << second << std::endl;
+
+        for (size_t index = first; index >= second; index--)
+            order.push_back(index);
+
+    }
+    return order;
+};
+
+void sortByOrder(std::vector<std::pair<int, int> > &vectorOfPairs, std::vector<int> &newSeq, std::vector<size_t> &order) {
+    for (size_t i = 0; i < order.size(); i++) {
+        size_t idx = order[i];
+        int winnerPair = vectorOfPairs[idx].first;
+        int loserPair = vectorOfPairs[idx].second;
+        
+        std::vector<int>::iterator it = std::find(newSeq.begin(), newSeq.end(), winnerPair);
+
+        std::vector<int>::iterator insertIn = std::lower_bound(newSeq.begin(), it, loserPair);
+
+        newSeq.insert(insertIn, loserPair);
     }
 };
 
-void PairAndCompare(std::vector<int> &sequence) {
-    if (sequence.size() == 1)
-        return ;
+std::vector<int> sortVector(std::vector<int> &seq) {
+    // -------------show entry
+    std::cout << "enter:   [ ";
+    for (size_t i = 0; i < seq.size(); i++) {
+        std::cout << seq[i] << ", ";
+    }
+    std::cout << "]" << std::endl;
+
+    if (seq.size() == 1)
+        return seq;
+
+    int straggler = -1;
+    if (seq.size() % 2 != 0) {
+        straggler = seq.back();
+        seq.pop_back();
+    }
 
     std::vector<std::pair<int, int> > vectorOfPairs;
-    for (size_t i = 0; i < sequence.size(); i += 2) {
-        vectorOfPairs.push_back(std::make_pair(sequence[i], sequence[i + 1]));
+    for (size_t i = 0; i < seq.size(); i += 2) {
+        vectorOfPairs.push_back(std::make_pair(seq[i], seq[i + 1]));
         if (vectorOfPairs.back().second > vectorOfPairs.back().first)
             std::swap(vectorOfPairs.back().second, vectorOfPairs.back().first);
     }
 
-    std::vector<int> winners;
-    std::vector<std::pair<int, int> > losers;
+    std::vector<int> newSeq;
     for (size_t i = 0; i < vectorOfPairs.size(); i++) {
-        winners.push_back(vectorOfPairs[i].first);
-        losers.push_back(std::make_pair(vectorOfPairs[i].second, vectorOfPairs[i].first));
+        newSeq.push_back(vectorOfPairs[i].first);
     }
 
-    // -------------show entry
-    std::cout << "enter:   [ ";
-    for (size_t i = 0; i < sequence.size(); i++) {
-        std::cout << sequence[i] << ", ";
-    }
-    std::cout << "]" << std::endl;
+
+    std::vector<int> winner = sortVector(newSeq);
+
     // -------------show pairs
-    std::cout << "pairs:   [ ";
+    std::cout << "\npairs:   [ ";
     for (size_t i = 0; i < vectorOfPairs.size(); i++) {
         std::cout << "(" << vectorOfPairs[i].first << ", "<< vectorOfPairs[i].second << ")"  << ", ";
     }
     std::cout << "]" << std::endl;
+
     // -------------show winners
-    std::cout << "winners: [ ";
-    for (size_t i = 0; i < winners.size(); i++) {
-        std::cout << winners[i] << ", ";
+    std::cout << "winner:  [ ";
+    for (size_t i = 0; i < winner.size(); i++) {
+        std::cout << winner[i] << ", ";
     }
     std::cout << "]" << std::endl;
-    // -------------show losers
-    std::cout << "losers:  [ ";
-    for (size_t i = 0; i < losers.size(); i++) {
-        std::cout << losers[i].first << ", ";
+
+    std::vector<size_t> JacSeq = JacobsthalSequence(vectorOfPairs.size());
+    // -------------show winners
+    std::cout << "JacSeq:  [ ";
+    for (size_t i = 0; i < JacSeq.size(); i++) {
+        std::cout << JacSeq[i] << ", ";
     }
-    std::cout << "]" << std::endl << std::endl;
+    std::cout << "]" << std::endl;
 
-    PairAndCompare(winners);
+    std::vector<size_t> order = InsertOrder(JacSeq, vectorOfPairs.size());
 
-    inserLosers(winners, losers);
-
-    std::cout << "insertion:  [ ";
-    for (size_t i = 0; i < winners.size(); i++) {
-        std::cout << winners[i] << ", ";
+    // -------------show winners
+    std::cout << "order:   [ ";
+    for (size_t i = 0; i < order.size(); i++) {
+        std::cout << order[i] << ", ";
     }
-    std::cout << "]" << std::endl << std::endl;
-}
+    std::cout << "]" << std::endl;
 
-void sortVector(std::vector<int> &sequence) {
-    int straggler = -1;
-    if (sequence.size() % 2 != 0) {
-        straggler = sequence.back();
-        sequence.pop_back();
+    sortByOrder(vectorOfPairs, winner, order);
+
+    if (straggler != -1) {
+        std::vector<int>::iterator insertIn = std::lower_bound(winner.begin(), winner.end(), straggler);
+
+        winner.insert(insertIn, straggler);
     }
 
-    PairAndCompare(sequence);
+    std::cout << "aftSort: [ ";
+    for (size_t i = 0; i < winner.size(); i++) {
+        std::cout << winner[i] << ", ";
+    }
+    std::cout << "]" << std::endl;
 
-
+    return winner;
 };
 
 std::vector<int> parsing(int ac, char **av) {
@@ -151,7 +190,12 @@ void PmergeMe::run(int ac, char **av) {
     // time_t startTime;
     // time_t endTime;
     // startTime = getTime();
-    sortVector(sequence);
+    std::vector<int> res = sortVector(sequence);
+    std::cout << "\n########### final = { ";
+    for (size_t i = 0; i < res.size(); i++) {
+        std::cout << res[i] << ", ";
+    }
+    std::cout << "} ###########\n";
     // std::cout << "Time to process a range of " << ac << " elements with std::vector : " << 0 << " us" << std::endl;
     // endTime = getTime();
 
