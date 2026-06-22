@@ -18,46 +18,43 @@ class PmergeMe
 
     // // -------------show entry
     // std::cout << "enter:   [ ";
-    // for (size_t i = 0; i < sequence.size(); i++) {
-    //     std::cout << sequence[i] << ", ";
+    // for (size_t i = 0; i < seq.size(); i++) {
+    //     std::cout << seq[i] << ", ";
     // }
     // std::cout << "]" << std::endl;
+
     // // -------------show pairs
-    // std::cout << "pairs:   [ ";
+    // std::cout << "\npairs:   [ ";
     // for (size_t i = 0; i < vectorOfPairs.size(); i++) {
     //     std::cout << "(" << vectorOfPairs[i].first << ", "<< vectorOfPairs[i].second << ")"  << ", ";
     // }
     // std::cout << "]" << std::endl;
+
     // // -------------show winners
-    // std::cout << "winners: [ ";
-    // for (size_t i = 0; i < winners.size(); i++) {
-    //     std::cout << winners[i] << ", ";
+    // std::cout << "winner:  [ ";
+    // for (size_t i = 0; i < winner.size(); i++) {
+    //     std::cout << winner[i] << ", ";
     // }
     // std::cout << "]" << std::endl;
-    // // -------------show losers
-    // std::cout << "losers:  [ ";
-    // for (size_t i = 0; i < losers.size(); i++) {
-    //     std::cout << losers[i].first << ", ";
-    // }
-    // std::cout << "]" << std::endl << std::endl;
 
-    // PairAndCompare(winners);
-
-    // std::cout << "winners:    [ ";
-    // for (size_t i = 0; i < winners.size(); i++) {
-    //     std::cout << winners[i] << ", ";
+    // // -------------show JacSeq
+    // std::cout << "JacSeq:  [ ";
+    // for (size_t i = 0; i < JacSeq.size(); i++) {
+    //     std::cout << JacSeq[i] << ", ";
     // }
     // std::cout << "]" << std::endl;
-    // // -------------show losers
-    // std::cout << "losers:     [ ";
-    // for (size_t i = 0; i < losers.size(); i++) {
-    //     std::cout << "(" << losers[i].first << ", " << losers[i].second << "), ";
+
+    
+    // // -------------show order
+    // std::cout << "order:   [ ";
+    // for (size_t i = 0; i < order.size(); i++) {
+    //     std::cout << order[i] << ", ";
     // }
     // std::cout << "]" << std::endl;
-    // inserLosers(winners, losers);
 
-    // std::cout << "insertion:  [ ";
-    // for (size_t i = 0; i < winners.size(); i++) {
-    //     std::cout << winners[i] << ", ";
+    // // -------------after sort
+    // std::cout << "aftSort: [ ";
+    // for (size_t i = 0; i < winner.size(); i++) {
+    //     std::cout << winner[i] << ", ";
     // }
-    // std::cout << "]" << std::endl << std::endl;
+    // std::cout << "]" << std::endl;

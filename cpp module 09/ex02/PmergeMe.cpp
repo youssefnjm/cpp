@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
+#include <sys/time.h>
 
 PmergeMe::PmergeMe(void) {};
 PmergeMe::~PmergeMe(void) {};
@@ -16,20 +17,14 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other) { (void) other; return (*th
 
 typedef std::pair<int, int> pair;
 
-time_t getTime(void) {
-    return std::time(NULL) * 1000000;
-}
+size_t getTime(void) {
+    struct timeval tv;
 
-// std::deque<int> vectorToDeque(std::vector<int> sequence) {
-//     std::deque<int> deque;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec * 1000000 + tv.tv_usec;
+};
 
-//     for (size_t i = 0; i < sequence.size(); i++)
-//         deque.push_back(sequence[i]);
-    
-//     return deque;
-// };
-
-std::vector<size_t> JacobsthalSequence(size_t vecPairSize) {
+std::vector<size_t> JacobsthalSequenceV(size_t vecPairSize) {
     std::vector<size_t> JacSeq;
 
     JacSeq.push_back(0);
@@ -39,9 +34,9 @@ std::vector<size_t> JacobsthalSequence(size_t vecPairSize) {
         JacSeq.push_back(res);
     }
     return JacSeq;
-}
+};
 
-std::vector<size_t> InsertOrder(std::vector<size_t>& JacSeq, size_t vecPairSize) {
+std::vector<size_t> GetInsertOrder(std::vector<size_t>& JacSeq, size_t vecPairSize) {
     std::vector<size_t> order;
     order.push_back(0);
 
@@ -52,8 +47,6 @@ std::vector<size_t> InsertOrder(std::vector<size_t>& JacSeq, size_t vecPairSize)
         if (first >= vecPairSize)
             first = vecPairSize - 1;
 
-        std::cout << "first: " << first << " second: " << second << std::endl;
-
         for (size_t index = first; index >= second; index--)
             order.push_back(index);
 
@@ -61,28 +54,7 @@ std::vector<size_t> InsertOrder(std::vector<size_t>& JacSeq, size_t vecPairSize)
     return order;
 };
 
-void sortByOrder(std::vector<std::pair<int, int> > &vectorOfPairs, std::vector<int> &newSeq, std::vector<size_t> &order) {
-    for (size_t i = 0; i < order.size(); i++) {
-        size_t idx = order[i];
-        int winnerPair = vectorOfPairs[idx].first;
-        int loserPair = vectorOfPairs[idx].second;
-        
-        std::vector<int>::iterator it = std::find(newSeq.begin(), newSeq.end(), winnerPair);
-
-        std::vector<int>::iterator insertIn = std::lower_bound(newSeq.begin(), it, loserPair);
-
-        newSeq.insert(insertIn, loserPair);
-    }
-};
-
-std::vector<int> sortVector(std::vector<int> &seq) {
-    // -------------show entry
-    std::cout << "enter:   [ ";
-    for (size_t i = 0; i < seq.size(); i++) {
-        std::cout << seq[i] << ", ";
-    }
-    std::cout << "]" << std::endl;
-
+std::vector<int> SortVector(std::vector<int> &seq) {
     if (seq.size() == 1)
         return seq;
 
@@ -104,41 +76,22 @@ std::vector<int> sortVector(std::vector<int> &seq) {
         newSeq.push_back(vectorOfPairs[i].first);
     }
 
+    std::vector<int> winner = SortVector(newSeq);
 
-    std::vector<int> winner = sortVector(newSeq);
+    std::vector<size_t> JacSeq = JacobsthalSequenceV(vectorOfPairs.size());
+    std::vector<size_t> order = GetInsertOrder(JacSeq, vectorOfPairs.size());
 
-    // -------------show pairs
-    std::cout << "\npairs:   [ ";
-    for (size_t i = 0; i < vectorOfPairs.size(); i++) {
-        std::cout << "(" << vectorOfPairs[i].first << ", "<< vectorOfPairs[i].second << ")"  << ", ";
-    }
-    std::cout << "]" << std::endl;
-
-    // -------------show winners
-    std::cout << "winner:  [ ";
-    for (size_t i = 0; i < winner.size(); i++) {
-        std::cout << winner[i] << ", ";
-    }
-    std::cout << "]" << std::endl;
-
-    std::vector<size_t> JacSeq = JacobsthalSequence(vectorOfPairs.size());
-    // -------------show winners
-    std::cout << "JacSeq:  [ ";
-    for (size_t i = 0; i < JacSeq.size(); i++) {
-        std::cout << JacSeq[i] << ", ";
-    }
-    std::cout << "]" << std::endl;
-
-    std::vector<size_t> order = InsertOrder(JacSeq, vectorOfPairs.size());
-
-    // -------------show winners
-    std::cout << "order:   [ ";
     for (size_t i = 0; i < order.size(); i++) {
-        std::cout << order[i] << ", ";
-    }
-    std::cout << "]" << std::endl;
+        size_t idx = order[i];
+        int winnerPair = vectorOfPairs[idx].first;
+        int loserPair = vectorOfPairs[idx].second;
+        
+        std::vector<int>::iterator it = std::find(winner.begin(), winner.end(), winnerPair);
 
-    sortByOrder(vectorOfPairs, winner, order);
+        std::vector<int>::iterator insertIn = std::lower_bound(winner.begin(), it, loserPair);
+
+        winner.insert(insertIn, loserPair);
+    }
 
     if (straggler != -1) {
         std::vector<int>::iterator insertIn = std::lower_bound(winner.begin(), winner.end(), straggler);
@@ -146,11 +99,83 @@ std::vector<int> sortVector(std::vector<int> &seq) {
         winner.insert(insertIn, straggler);
     }
 
-    std::cout << "aftSort: [ ";
-    for (size_t i = 0; i < winner.size(); i++) {
-        std::cout << winner[i] << ", ";
+    return winner;
+};
+// ################################## DEQUE
+std::deque<size_t> JacobsthalSequenceD(size_t vecPairSize) {
+    std::deque<size_t> JacSeq;
+
+    JacSeq.push_back(0);
+    JacSeq.push_back(1);
+    while (JacSeq.back() < vecPairSize) {
+        size_t res = JacSeq[JacSeq.size() - 1] + 2 * JacSeq[JacSeq.size() - 2];
+        JacSeq.push_back(res);
     }
-    std::cout << "]" << std::endl;
+    return JacSeq;
+};
+
+std::deque<size_t> GetInsertOrder(std::deque<size_t>& JacSeq, size_t vecPairSize) {
+    std::deque<size_t> order;
+    order.push_back(0);
+
+    for (size_t i = 3; i < JacSeq.size(); i++) {
+        size_t first = JacSeq[i] - 1;
+        size_t second = JacSeq[i - 1];
+
+        if (first >= vecPairSize)
+            first = vecPairSize - 1;
+
+        for (size_t index = first; index >= second; index--)
+            order.push_back(index);
+
+    }
+    return order;
+};
+
+std::deque<int> Sortdeque(std::deque<int> &seq) {
+    if (seq.size() == 1)
+        return seq;
+
+    int straggler = -1;
+    if (seq.size() % 2 != 0) {
+        straggler = seq.back();
+        seq.pop_back();
+    }
+
+    std::deque<std::pair<int, int> > dequeOfPairs;
+    for (size_t i = 0; i < seq.size(); i += 2) {
+        dequeOfPairs.push_back(std::make_pair(seq[i], seq[i + 1]));
+        if (dequeOfPairs.back().second > dequeOfPairs.back().first)
+            std::swap(dequeOfPairs.back().second, dequeOfPairs.back().first);
+    }
+
+    std::deque<int> newSeq;
+    for (size_t i = 0; i < dequeOfPairs.size(); i++) {
+        newSeq.push_back(dequeOfPairs[i].first);
+    }
+
+    std::deque<int> winner = Sortdeque(newSeq);
+
+    std::deque<size_t> JacSeq = JacobsthalSequenceD(dequeOfPairs.size());
+    std::deque<size_t> order = GetInsertOrder(JacSeq, dequeOfPairs.size());
+
+    for (size_t i = 0; i < order.size(); i++) {
+        size_t idx = order[i];
+        int winnerPair = dequeOfPairs[idx].first;
+        int loserPair = dequeOfPairs[idx].second;
+        
+        std::deque<int>::iterator it = std::find(winner.begin(), winner.end(), winnerPair);
+
+        std::deque<int>::iterator insertIn = std::lower_bound(winner.begin(), it, loserPair);
+
+        winner.insert(insertIn, loserPair);
+    }
+
+    if (straggler != -1) {
+        std::deque<int>::iterator insertIn = std::lower_bound(winner.begin(), winner.end(), straggler);
+
+        winner.insert(insertIn, straggler);
+    }
 
     return winner;
 };
@@ -172,36 +197,38 @@ std::vector<int> parsing(int ac, char **av) {
         sequence.push_back(num);
     }
     return sequence;
-}
+};
 
 void PmergeMe::run(int ac, char **av) {
-    std::vector<int> sequence = parsing(ac, av);
+    std::vector<int> unsortedVector = parsing(ac, av);
+    std::deque<int> unsortedDeque;
 
-    // std::cout << "{ ";
-    // for (size_t i = 0; i < sequence.size(); i++) {
-    //     std::cout << sequence[i] << ", ";
-    // }
-    // std::cout << "}\n";
+    for (size_t i = 0; i < unsortedVector.size(); i++)
+        unsortedDeque.push_back(unsortedVector[i]);
 
-    // time_t end = getTime();
-
-    // std::cout << "s[" << start << "] - e[" << end << "] = " << (end - start) << std::endl;
-
-    // time_t startTime;
-    // time_t endTime;
-    // startTime = getTime();
-    std::vector<int> res = sortVector(sequence);
-    std::cout << "\n########### final = { ";
-    for (size_t i = 0; i < res.size(); i++) {
-        std::cout << res[i] << ", ";
+    std::cout << "Before:  ";
+    for (size_t i = 0; i < unsortedVector.size(); i++) {
+        std::cout << unsortedVector[i] << " ";
     }
-    std::cout << "} ###########\n";
-    // std::cout << "Time to process a range of " << ac << " elements with std::vector : " << 0 << " us" << std::endl;
-    // endTime = getTime();
+    std::cout << std::endl;
 
-    // startTime = getTime();
-    // sortDeque(vectorToDeque(sequence));
-    // std::cout << "Time to process a range of " << ac << " elements with std::deque : " << 0 << " us" << std::endl;
-    // endTime = getTime();
+    time_t startTime;
+    time_t doration;
+
+    startTime = getTime();
+    std::vector<int> sorted = SortVector(unsortedVector);
+    doration = getTime() - startTime;
+
+    std::cout << "After:   ";
+    for (size_t i = 0; i < sorted.size(); i++) {
+        std::cout << sorted[i] << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "Time to process a range of " << ac << " elements with std::vector : " << doration << " us" << std::endl;
+
+    startTime = getTime();
+    Sortdeque(unsortedDeque);
+    doration = getTime() - startTime;
+    std::cout << "Time to process a range of " << ac << " elements with std::deque : " << doration << " us" << std::endl;
 
 };
