@@ -19,7 +19,7 @@ class PmergeMe
         PmergeMe &operator=(const PmergeMe &other);
         ~PmergeMe();
 
-        static size_t GetTime(void);
+        size_t GetTime(void);
         std::vector<int> Parsing(int ac, char **av);
         std::deque<int> Sortdeque(std::deque<int> &seq);
         std::vector<int> SortVector(std::vector<int> &seq);

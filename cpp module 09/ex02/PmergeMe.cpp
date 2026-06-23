@@ -1,13 +1,7 @@
 #include "PmergeMe.hpp"
 #include <algorithm>
 #include <cerrno>
-#include <cstddef>
-#include <ctime>
-#include <deque>
-#include <iterator>
-#include <stdexcept>
 #include <utility>
-#include <vector>
 #include <sys/time.h>
 
 PmergeMe::PmergeMe(void) {};
