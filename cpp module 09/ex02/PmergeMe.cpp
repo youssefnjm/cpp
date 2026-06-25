@@ -3,6 +3,7 @@
 #include <cerrno>
 #include <utility>
 #include <sys/time.h>
+#include <vector>
 
 PmergeMe::PmergeMe(void) {};
 PmergeMe::~PmergeMe(void) {};
@@ -37,12 +38,10 @@ std::vector<size_t> PmergeMe::GetInsertOrder(std::vector<size_t>& JacSeq, size_t
         size_t first = JacSeq[i] - 1;
         size_t second = JacSeq[i - 1];
 
-        if (first >= vecPairSize)
-            first = vecPairSize - 1;
+        if (first >= vecPairSize) first = vecPairSize - 1;
 
         for (size_t index = first; index >= second; index--)
             order.push_back(index);
-
     }
     return order;
 };
@@ -58,41 +57,33 @@ std::vector<int> PmergeMe::SortVector(std::vector<int> &seq) {
     }
 
     std::vector<std::pair<int, int> > vectorOfPairs;
+    std::vector<int> winners;
     for (size_t i = 0; i < seq.size(); i += 2) {
-        vectorOfPairs.push_back(std::make_pair(seq[i], seq[i + 1]));
-        if (vectorOfPairs.back().second > vectorOfPairs.back().first)
-            std::swap(vectorOfPairs.back().second, vectorOfPairs.back().first);
+        int bigger = seq[i];
+        int smaller = seq[i + 1];
+        if (smaller > bigger) 
+            std::swap(bigger, smaller);
+        vectorOfPairs.push_back(std::make_pair(bigger, smaller));
+        winners.push_back(bigger);
     }
 
-    std::vector<int> newSeq;
-    for (size_t i = 0; i < vectorOfPairs.size(); i++) {
-        newSeq.push_back(vectorOfPairs[i].first);
-    }
-
-    std::vector<int> winner = SortVector(newSeq);
-
+    winners = SortVector(winners);
     std::vector<size_t> JacSeq = JacobsthalSequenceVector(vectorOfPairs.size());
     std::vector<size_t> order = GetInsertOrder(JacSeq, vectorOfPairs.size());
 
     for (size_t i = 0; i < order.size(); i++) {
         size_t idx = order[i];
-        int winnerPair = vectorOfPairs[idx].first;
-        int loserPair = vectorOfPairs[idx].second;
-        
-        std::vector<int>::iterator it = std::find(winner.begin(), winner.end(), winnerPair);
-
-        std::vector<int>::iterator insertIn = std::lower_bound(winner.begin(), it, loserPair);
-
-        winner.insert(insertIn, loserPair);
+        std::vector<int>::iterator it = std::find(winners.begin(), winners.end(), vectorOfPairs[idx].first);
+        std::vector<int>::iterator insertIn = std::lower_bound(winners.begin(), it, vectorOfPairs[idx].second);
+        winners.insert(insertIn, vectorOfPairs[idx].second);
     }
 
     if (straggler != -1) {
-        std::vector<int>::iterator insertIn = std::lower_bound(winner.begin(), winner.end(), straggler);
-
-        winner.insert(insertIn, straggler);
+        std::vector<int>::iterator insertIn = std::lower_bound(winners.begin(), winners.end(), straggler);
+        winners.insert(insertIn, straggler);
     }
 
-    return winner;
+    return winners;
 };
 
 // ################################## DEQUE
@@ -108,7 +99,7 @@ std::deque<size_t> PmergeMe::JacobsthalSequenceDeque(size_t DecPairSize) {
     return JacSeq;
 };
 
-std::deque<size_t> PmergeMe::GetInsertOrder(std::deque<size_t>& JacSeq, size_t vecPairSize) {
+std::deque<size_t> PmergeMe::GetInsertOrder(std::deque<size_t>& JacSeq, size_t DeqPairSize) {
     std::deque<size_t> order;
     order.push_back(0);
 
@@ -116,8 +107,8 @@ std::deque<size_t> PmergeMe::GetInsertOrder(std::deque<size_t>& JacSeq, size_t v
         size_t first = JacSeq[i] - 1;
         size_t second = JacSeq[i - 1];
 
-        if (first >= vecPairSize)
-            first = vecPairSize - 1;
+        if (first >= DeqPairSize)
+            first = DeqPairSize - 1;
 
         for (size_t index = first; index >= second; index--)
             order.push_back(index);
@@ -126,7 +117,7 @@ std::deque<size_t> PmergeMe::GetInsertOrder(std::deque<size_t>& JacSeq, size_t v
     return order;
 };
 
-std::deque<int> PmergeMe::Sortdeque(std::deque<int> &seq) {
+std::deque<int> PmergeMe::SortDeque(std::deque<int> &seq) {
     if (seq.size() == 1)
         return seq;
 
@@ -137,41 +128,33 @@ std::deque<int> PmergeMe::Sortdeque(std::deque<int> &seq) {
     }
 
     std::deque<std::pair<int, int> > dequeOfPairs;
+    std::deque<int> winners;
     for (size_t i = 0; i < seq.size(); i += 2) {
-        dequeOfPairs.push_back(std::make_pair(seq[i], seq[i + 1]));
-        if (dequeOfPairs.back().second > dequeOfPairs.back().first)
-            std::swap(dequeOfPairs.back().second, dequeOfPairs.back().first);
+        int bigger = seq[i];
+        int smaller = seq[i + 1];
+        if (smaller > bigger) 
+            std::swap(bigger, smaller);
+        dequeOfPairs.push_back(std::make_pair(bigger, smaller));
+        winners.push_back(bigger);
     }
 
-    std::deque<int> newSeq;
-    for (size_t i = 0; i < dequeOfPairs.size(); i++) {
-        newSeq.push_back(dequeOfPairs[i].first);
-    }
-
-    std::deque<int> winner = Sortdeque(newSeq);
-
+    winners = SortDeque(winners);
     std::deque<size_t> JacSeq = JacobsthalSequenceDeque(dequeOfPairs.size());
     std::deque<size_t> order = GetInsertOrder(JacSeq, dequeOfPairs.size());
 
     for (size_t i = 0; i < order.size(); i++) {
         size_t idx = order[i];
-        int winnerPair = dequeOfPairs[idx].first;
-        int loserPair = dequeOfPairs[idx].second;
-        
-        std::deque<int>::iterator it = std::find(winner.begin(), winner.end(), winnerPair);
-
-        std::deque<int>::iterator insertIn = std::lower_bound(winner.begin(), it, loserPair);
-
-        winner.insert(insertIn, loserPair);
+        std::deque<int>::iterator it = std::find(winners.begin(), winners.end(), dequeOfPairs[idx].first);
+        std::deque<int>::iterator insertIn = std::lower_bound(winners.begin(), it, dequeOfPairs[idx].second);
+        winners.insert(insertIn, dequeOfPairs[idx].second);
     }
 
     if (straggler != -1) {
-        std::deque<int>::iterator insertIn = std::lower_bound(winner.begin(), winner.end(), straggler);
-
-        winner.insert(insertIn, straggler);
+        std::deque<int>::iterator insertIn = std::lower_bound(winners.begin(), winners.end(), straggler);
+        winners.insert(insertIn, straggler);
     }
 
-    return winner;
+    return winners;
 };
 
 std::vector<int> PmergeMe::Parsing(int ac, char **av) {

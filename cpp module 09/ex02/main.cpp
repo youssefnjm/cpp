@@ -20,7 +20,7 @@ int main(int ac, char **av) {
         dorationVector = mainVar.GetTime() - startTime;
 
         startTime = mainVar.GetTime();
-        std::deque<int> sortedDeque = mainVar.Sortdeque(unsortedDeque);
+        std::deque<int> sortedDeque = mainVar.SortDeque(unsortedDeque);
         dorationDeque = mainVar.GetTime() - startTime;
 
         std::cout << "Before:  ";
