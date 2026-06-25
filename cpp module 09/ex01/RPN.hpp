@@ -4,13 +4,17 @@
 
 class RPN
 {
+    private:
+        bool isInputValid(char c);
+        int applyOperator(char opr, int num1, int num2);
+
     public:
         RPN(void);
         RPN(const RPN& other);
         RPN &operator=(const RPN &other);
         ~RPN();
 
-        static void calculate(std::string input);
+        void calculate(std::string input);
 };
 
 #endif

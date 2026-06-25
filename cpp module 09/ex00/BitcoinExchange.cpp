@@ -2,32 +2,25 @@
 #include <cerrno>
 #include <exception>
 #include <fstream>
-#include <iostream>
-#include <map>
 #include <sstream>
 
-BitcoinExchange::BitcoinExchange(void) {}
-BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) { (void) other; }
-BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other) { (void) other; return (*this); }
-BitcoinExchange::~BitcoinExchange(void) {}
+BitcoinExchange::BitcoinExchange(void) {};
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) { (void) other; };
+BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other) { (void) other; return (*this); };
+BitcoinExchange::~BitcoinExchange(void) {};
 
-static void ft_strtrim(std::string& str, char del) {
+void BitcoinExchange::ft_strtrim(std::string& str, char del) {
     size_t start = str.find_first_not_of(del);
-
     if (start == std::string::npos) {
         str.clear();
         return ;
     }
-
     size_t end = str.find_last_not_of(del);
-
     str = str.substr(start, end - start + 1);
-}
+};
 
-static void isDate(std::string date) {
+void BitcoinExchange::isDate(std::string& date) {
     std::stringstream ss(date);
-
-    std::string word;
     int year, month, day;
     char dash1,dash2;
 
@@ -42,9 +35,9 @@ static void isDate(std::string date) {
     if (day > daysInMonth[month - 1])
         throw std::runtime_error("Unvalid day compared to month: " + date + "\n");
 
-}
+};
 
-static void isNumber(std::string val, int flag) {
+void BitcoinExchange::isNumber(std::string& val, int flag) {
     errno = 0;
     char *end;
     double value = std::strtod(val.c_str(), &end);
@@ -56,10 +49,10 @@ static void isNumber(std::string val, int flag) {
         throw std::runtime_error("Unvalid value (overflow): " + val);
 
     if (flag && (value < 0 || value > 1000))
-        throw std::runtime_error("Unvalid value (out of range): " + val);
-}
+        throw std::runtime_error("Unvalid value (out of range 0-1000): " + val);
+};
 
-static double getValue(std::map<std::string, std::string>& dataBase, std::string &date) {
+double BitcoinExchange::getValue(std::map<std::string, double>& dataBase, std::string &date) {
     std::stringstream ss(date);
     int year, month, day;
     char dash1, dash2;
@@ -74,32 +67,28 @@ static double getValue(std::map<std::string, std::string>& dataBase, std::string
         << std::setw(2) << std::setfill('0') << day;
 
     std::string formatedDate = ss.str();
-    
-    std::map<std::string, std::string>::iterator it = dataBase.lower_bound(formatedDate);
-    if (it != dataBase.end() && (it->first == formatedDate))
-        return std::strtod(it->second.c_str(), NULL);
-    
-    if (it == dataBase.begin())
-        return -1;
-    
-    it--;
+    std::map<std::string, double>::iterator it = dataBase.lower_bound(formatedDate);
 
-    return std::strtod(it->second.c_str(), NULL);
-}
+    if (it == dataBase.begin() && (it->first != formatedDate))
+        throw std::runtime_error("Unvalid date (bitcoin didn't exist yet).");
+    
+    if (it == dataBase.end() || (it->first != formatedDate)) {
+        it--;
+        return it->second;
+    }
 
-static std::map<std::string, std::string> getData() {
-    std::map<std::string, std::string> dataBase;
+    return it->second;
+};
 
+std::map<std::string, double> BitcoinExchange::getData() {
+    std::map<std::string, double> dataBase;
     std::ifstream dataBaseFile("data.csv");
-    if (!dataBaseFile.is_open())
-        throw std::runtime_error("can't open file!");
-
     std::string buffer;
-    if (!std::getline(dataBaseFile, buffer, '\n'))
-        throw std::runtime_error("file is empty!");
 
-    while (std::getline(dataBaseFile, buffer, '\n')) {
+    if (!dataBaseFile.is_open() || !std::getline(dataBaseFile, buffer))
+        throw std::runtime_error("could not open or empty input file.");
 
+    while (std::getline(dataBaseFile, buffer)) {
         std::stringstream ss(buffer);
         std::map<int, std::string> row;
 
@@ -117,33 +106,22 @@ static std::map<std::string, std::string> getData() {
             throw std::runtime_error("Unvalid column number in csv database");
         }
 
-        dataBase[row[0]] = row[1];
+        isDate(row[0]);
+        isNumber(row[1], 0);
+        dataBase[row[0]] = std::strtod(row[1].c_str(), NULL);
     }
     return dataBase;
-}
+};
 
 void BitcoinExchange::ShowValues(std::string fileName) {
-    // store data from datavbase
-    std::map<std::string, std::string> dataBase = getData();
-    
-    std::map<std::string, std::string>::iterator dataBaseIt = dataBase.begin();
-    std::map<std::string, std::string>::iterator dataBaseitEnd = dataBase.end();
-    while (dataBaseIt != dataBaseitEnd) {
-        isDate(dataBaseIt->first);
-        isNumber(dataBaseIt->second, 0);
-        dataBaseIt++;
-    }
-
-    // get values
+    std::map<std::string, double> dataBase = getData();
     std::ifstream inputFile(fileName);
-    if (!inputFile.is_open())
-        throw std::runtime_error("Error: can't open file.");
-
     std::string buffer;
-    if (!std::getline(inputFile, buffer, '\n'))
-        throw std::runtime_error("Error: input file is empty!");
 
-    while (std::getline(inputFile, buffer, '\n')) {
+    if (!inputFile.is_open() || !std::getline(inputFile, buffer))
+        throw std::runtime_error("could not open or empty input file.");
+
+    while (std::getline(inputFile, buffer)) {
         std::stringstream ss(buffer);
         std::map<int, std::string> row;
         std::string column;
@@ -160,19 +138,19 @@ void BitcoinExchange::ShowValues(std::string fileName) {
             continue ;
         }
 
+        double value = 0;
         try {
             isDate(row[0]);
             isNumber(row[1], 1);
+            value = getValue(dataBase, row[0]);
         } catch (std::exception &err) {
             std::cout << "Error: Bad input => " << err.what() << std::endl;
             continue ;
         }
-
-        double value = getValue(dataBase, row[0]);
 
         std::cout << row[0] 
                 << " => " << row[1]
                 << " = " << (std::strtod(row[1].c_str(), NULL) * value)
                 << std::endl;
     }
-}
+};
