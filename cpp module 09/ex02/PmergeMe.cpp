@@ -166,10 +166,10 @@ std::vector<int> PmergeMe::Parsing(int ac, char **av) {
         long num = std::strtol(av[i], &end, 10);
 
         if (av[i][0] == '\0' || *end != '\0')
-            throw std::runtime_error("Error: Invalid Argument (contain only numbers).");
+            throw std::runtime_error("Error: Invalid Argument (should contain only numbers).");
 
-        if (errno == ERANGE || !(num >= -2147483648 && num <= 2147483647))
-            throw std::runtime_error("Error: Invalid Argument (overflow).");
+        if (errno == ERANGE || !(num >= 0 && num <= 2147483647))
+            throw std::runtime_error("Error: Invalid Argument (only positive numbers).");
 
         sequence.push_back(num);
     }

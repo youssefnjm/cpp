@@ -34,7 +34,6 @@ void BitcoinExchange::isDate(std::string& date) {
 
     if (day > daysInMonth[month - 1])
         throw std::runtime_error("Unvalid day compared to month: " + date + "\n");
-
 };
 
 void BitcoinExchange::isNumber(std::string& val, int flag) {
@@ -58,7 +57,6 @@ double BitcoinExchange::getValue(std::map<std::string, double>& dataBase, std::s
     char dash1, dash2;
 
     ss >> year >> dash1 >> month >> dash2 >> day;
-
     ss.str("");
     ss.clear();
 
@@ -95,16 +93,14 @@ std::map<std::string, double> BitcoinExchange::getData() {
         int countColumn = 0;
         std::string column;
         while (std::getline(ss, column, ',')) {
-            
             if (column.empty())
                 throw std::runtime_error("unvalid syntax format in csv database");
 
             row[countColumn++] = column;
         }
 
-        if (countColumn != 2) {
+        if (countColumn != 2)
             throw std::runtime_error("Unvalid column number in csv database");
-        }
 
         isDate(row[0]);
         isNumber(row[1], 0);
@@ -127,8 +123,7 @@ void BitcoinExchange::ShowValues(std::string fileName) {
         std::string column;
         int countCol = 0;
 
-        while (std::getline(ss, column, '|'))
-        {
+        while (std::getline(ss, column, '|')) {
             ft_strtrim(column, ' ');
             row[countCol++] = column;
         }
@@ -149,8 +144,8 @@ void BitcoinExchange::ShowValues(std::string fileName) {
         }
 
         std::cout << row[0] 
-                << " => " << row[1]
-                << " = " << (std::strtod(row[1].c_str(), NULL) * value)
-                << std::endl;
+            << " => " << row[1]
+            << " = " << (std::strtod(row[1].c_str(), NULL) * value)
+            << std::endl;
     }
 };

@@ -3,7 +3,7 @@
 int main(int ac, char **av) {
 
     try {
-        if (ac == 1)
+        if (ac != 2)
             throw std::runtime_error("Error: Unvalid argument numbers.");
         RPN main;
 

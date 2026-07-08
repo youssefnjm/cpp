@@ -9,29 +9,33 @@ RPN::RPN(const RPN &other) { (void) other; };
 RPN &RPN::operator=(const RPN &other) { (void) other; return (*this); };
 RPN::~RPN(void) {};
 
-bool RPN::isInputValid(char c) {
-    return (!(c >= '0' && c <= '9') 
-        && !(c == '+' || c == '-' || c == '*' || c == '/'));
+bool RPN::isInputValid(std::string buffer) {
+    if (buffer.length() != 1)
+        return false;
+    char c = buffer[0];
+    if (!std::isdigit(c) && !(c == '+' || c == '-' || c == '*' || c == '/'))
+        return false;
+    return true;
 };
 
-int RPN::applyOperator(char opr, int num1, int num2) {
+double RPN::applyOperator(char opr, double num1, double num2) {
     if (opr == '+') return (num2 + num1);
     if (opr == '-') return (num2 - num1);
     if (opr == '*') return (num2 * num1);
     if (num1 == 0) throw std::runtime_error("Error: can't div by 0");
-    return (num2 / num1);
+    return (num2 / num1);                
 };
 
 void RPN::calculate(std::string input) {
-    std::stack<int> stack;
+    std::stack<double> stack;
 
     std::stringstream ss(input);
     std::string buffer;
     while (ss >> buffer) {
-        if (buffer.length() != 1 || isInputValid(buffer[0]))
+        if (!isInputValid(buffer))
             throw std::runtime_error("Error: argument should be operator (+ - / *) or numbers less than 10.");
 
-        if (buffer[0] >= '0' && buffer[0] <= '9') {
+        if (std::isdigit(buffer[0])) {
             stack.push(std::atoi(buffer.c_str()));
             continue ;
         }
@@ -39,12 +43,12 @@ void RPN::calculate(std::string input) {
         if (stack.size() < 2)
             throw std::runtime_error("Error: Invalid expression (too many operators left over).");
 
-        int num1 = stack.top();
+        double num1 = stack.top();
         stack.pop();
-        int num2 = stack.top();
+        double num2 = stack.top();
         stack.pop();
 
-        int res = applyOperator(buffer[0], num1, num2);
+        double res = applyOperator(buffer[0], num1, num2);
         stack.push(res);
     }
 
