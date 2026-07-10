@@ -1,4 +1,5 @@
 #include "RPN.hpp"
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <stack>
@@ -18,18 +19,21 @@ bool RPN::isOperator(std::string buffer) {
     return true;
 };
 
-bool RPN::isNumber(std::string buffer) {
-    char *end;
+bool RPN::isNumber(const std::string& buffer) {
+    char* end;
+    errno = 0;  // RESET before strtod!
+    
     double num = std::strtod(buffer.c_str(), &end);
-
+    
     if (*end != '\0')
         return false;
-
-    std::cout << "-----------> " << buffer << " => " << static_cast<double>(num) << " [" << *end << "]" << std::endl;
-    std::cout << (num < 10) << std::endl;
-    if (errno == ERANGE || !(num >= 0 && num < 10))
+    
+    if (errno == ERANGE)
         return false;
 
+    if (num >= 10 || num < 0)
+        return false;
+    
     return true;
 };
 
@@ -75,5 +79,5 @@ void RPN::calculate(std::string input) {
     if (stack.size() != 1)
         throw std::runtime_error("Error: Invalid expression (too many numbers left over).");
 
-    std::cout << stack.top() << std::endl;
+    std::cout << std::setprecision(10) << stack.top() << std::endl;
 };

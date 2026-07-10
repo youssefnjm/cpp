@@ -7,7 +7,7 @@ class RPN
     private:
         bool isOperator(std::string buffer);
         double applyOperator(char opr, double num1, double num2);
-        bool isNumber(std::string buffer);
+        bool isNumber(const std::string &buffer);
 
     public:
         RPN(void);

@@ -19,21 +19,30 @@ void BitcoinExchange::ft_strtrim(std::string& str, char del) {
     str = str.substr(start, end - start + 1);
 };
 
+bool BitcoinExchange::isLeapYear(int year) {
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+};
+
 void BitcoinExchange::isDate(std::string& date) {
     std::stringstream ss(date);
-    int year, month, day;
+    long year, month, day;
     char dash1,dash2;
 
-    if (!(ss >> year >> dash1 >> month >> dash2 >> day) || !(ss.eof()))
-        throw std::runtime_error("Unvalid date syntax YYYY-MM-DD: " + date);
+    ss >> year >> dash1 >> month >> dash2 >> day;
+    if (ss.fail() || !(ss.eof()))
+        throw std::runtime_error("Invalid date syntax YYYY-MM-DD: " + date);
 
     if (year < 1 || month > 12 || month < 1 || day < 1)
-        throw std::runtime_error("Unvalid date range : " + date);
+        throw std::runtime_error("Invalid date range : " + date);
 
     int daysInMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-    if (day > daysInMonth[month - 1])
-        throw std::runtime_error("Unvalid day compared to month: " + date + "\n");
+    if (month == 2 && isLeapYear(year)) {
+        if (day > 29)
+            throw std::runtime_error("Invalid day compared to month: " + date + "\n");
+    }
+    else if (day > daysInMonth[month - 1])
+        throw std::runtime_error("Invalid day compared to month: " + date + "\n");
 };
 
 void BitcoinExchange::isNumber(std::string& val, int flag) {
@@ -42,13 +51,13 @@ void BitcoinExchange::isNumber(std::string& val, int flag) {
     double value = std::strtod(val.c_str(), &end);
 
     if (*end != '\0')
-        throw std::runtime_error("Unvalid value (contain chars): " + val);
+        throw std::runtime_error("Invalid value (contain chars): " + val);
 
     if (errno == ERANGE)
-        throw std::runtime_error("Unvalid value (overflow): " + val);
+        throw std::runtime_error("Invalid value (overflow): " + val);
 
     if (flag && (value < 0 || value > 1000))
-        throw std::runtime_error("Unvalid value (out of range 0-1000): " + val);
+        throw std::runtime_error("Invalid value (out of range 0-1000): " + val);
 };
 
 double BitcoinExchange::getValue(std::map<std::string, double>& dataBase, std::string &date) {
@@ -68,7 +77,7 @@ double BitcoinExchange::getValue(std::map<std::string, double>& dataBase, std::s
     std::map<std::string, double>::iterator it = dataBase.lower_bound(formatedDate);
 
     if (it == dataBase.begin() && (it->first != formatedDate))
-        throw std::runtime_error("Unvalid date (bitcoin didn't exist yet).");
+        throw std::runtime_error("Invalid date (bitcoin didn't exist yet).");
     
     if (it == dataBase.end() || (it->first != formatedDate)) {
         it--;
@@ -94,13 +103,13 @@ std::map<std::string, double> BitcoinExchange::getData() {
         std::string column;
         while (std::getline(ss, column, ',')) {
             if (column.empty())
-                throw std::runtime_error("unvalid syntax format in csv database");
+                throw std::runtime_error("Invalid syntax format in csv database");
 
             row[countColumn++] = column;
         }
 
         if (countColumn != 2)
-            throw std::runtime_error("Unvalid column number in csv database");
+            throw std::runtime_error("Invalid column number in csv database");
 
         isDate(row[0]);
         isNumber(row[1], 0);
@@ -129,7 +138,7 @@ void BitcoinExchange::ShowValues(std::string fileName) {
         }
 
         if (countCol != 2) {
-            std::cerr << "Error: Bad input => Unvalid columns numbers in row." << std::endl;
+            std::cerr << "Error: Bad input => Invalid columns numbers in row." << std::endl;
             continue ;
         }
 
