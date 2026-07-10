@@ -5,8 +5,9 @@
 class RPN
 {
     private:
-        bool isInputValid(std::string buffer);
+        bool isOperator(std::string buffer);
         double applyOperator(char opr, double num1, double num2);
+        bool isNumber(std::string buffer);
 
     public:
         RPN(void);
