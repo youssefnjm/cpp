@@ -1,5 +1,6 @@
 #include "RPN.hpp"
 #include <iostream>
+#include <list>
 #include <sstream>
 #include <stack>
 
@@ -43,7 +44,7 @@ double RPN::applyOperator(char opr, double num1, double num2) {
 };
 
 void RPN::calculate(std::string input) {
-    std::stack<double> stack;
+    std::stack<double, std::list<double> > stack;
 
     std::stringstream ss(input);
     std::string buffer;
