@@ -1,9 +1,7 @@
 #include "RPN.hpp"
-#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <stack>
-#include <stdexcept>
 
 RPN::RPN(void) {};
 RPN::RPN(const RPN &other) { (void) other; };
@@ -21,8 +19,7 @@ bool RPN::isOperator(std::string buffer) {
 
 bool RPN::isNumber(const std::string& buffer) {
     char* end;
-    errno = 0;  // RESET before strtod!
-    
+    errno = 0;
     double num = std::strtod(buffer.c_str(), &end);
     
     if (*end != '\0')
@@ -68,9 +65,8 @@ void RPN::calculate(std::string input) {
             double res = applyOperator(buffer[0], num1, num2);
             stack.push(res);
         } 
-        else {
+        else
             throw std::runtime_error("Error: argument should be operator (+ - / *) or numbers less than 10.");
-        }
     }
 
     if (stack.size() == 0)
@@ -79,5 +75,5 @@ void RPN::calculate(std::string input) {
     if (stack.size() != 1)
         throw std::runtime_error("Error: Invalid expression (too many numbers left over).");
 
-    std::cout << std::setprecision(10) << stack.top() << std::endl;
+    std::cout << stack.top() << std::endl;
 };

@@ -1,5 +1,6 @@
 #include "BitcoinExchange.hpp"
 #include <cerrno>
+#include <ctime>
 #include <exception>
 #include <fstream>
 #include <sstream>
@@ -8,6 +9,25 @@ BitcoinExchange::BitcoinExchange(void) {};
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) { (void) other; };
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other) { (void) other; return (*this); };
 BitcoinExchange::~BitcoinExchange(void) {};
+
+time_t BitcoinExchange::DateToTimeT(std::string Sdate) {
+    std::stringstream ss(Sdate);
+    int year, month, day;
+    char dash;
+
+    ss >> year >> dash >> month >> dash >> day;
+    struct tm date;
+
+    date.tm_year = year - 1900;
+    date.tm_mon = month - 1;
+    date.tm_mday = day;
+    date.tm_hour = 0;
+    date.tm_min = 0;
+    date.tm_sec = 0;
+    date.tm_isdst = 0;
+    time_t time = std::mktime(&date);
+    return time;
+};
 
 void BitcoinExchange::ft_strtrim(std::string& str, char del) {
     size_t start = str.find_first_not_of(del);
@@ -19,16 +39,12 @@ void BitcoinExchange::ft_strtrim(std::string& str, char del) {
     str = str.substr(start, end - start + 1);
 };
 
-bool BitcoinExchange::isLeapYear(int year) {
-    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-};
-
 void BitcoinExchange::isDate(std::string& date) {
     std::stringstream ss(date);
-    long year, month, day;
-    char dash1,dash2;
+    int year, month, day;
+    char dash;
 
-    ss >> year >> dash1 >> month >> dash2 >> day;
+    ss >> year >> dash >> month >> dash >> day;
     if (ss.fail() || !(ss.eof()))
         throw std::runtime_error("Invalid date syntax YYYY-MM-DD: " + date);
 
@@ -37,7 +53,7 @@ void BitcoinExchange::isDate(std::string& date) {
 
     int daysInMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-    if (month == 2 && isLeapYear(year)) {
+    if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))) {
         if (day > 29)
             throw std::runtime_error("Invalid day compared to month: " + date + "\n");
     }
@@ -60,24 +76,12 @@ void BitcoinExchange::isNumber(std::string& val, int flag) {
         throw std::runtime_error("Invalid value (out of range 0-1000): " + val);
 };
 
-double BitcoinExchange::getValue(std::map<std::string, double>& dataBase, std::string &date) {
-    std::stringstream ss(date);
-    int year, month, day;
-    char dash1, dash2;
-
-    ss >> year >> dash1 >> month >> dash2 >> day;
-    ss.str("");
-    ss.clear();
-
-    ss << year << "-"
-        << std::setw(2) << std::setfill('0') << month << "-"
-        << std::setw(2) << std::setfill('0') << day;
-
-    std::string formatedDate = ss.str();
-    std::map<std::string, double>::iterator it = dataBase.lower_bound(formatedDate);
+double BitcoinExchange::getValue(std::map<time_t, double>& dataBase, std::string &date) {
+    time_t formatedDate = DateToTimeT(date);
+    std::map<time_t, double>::iterator it = dataBase.lower_bound(formatedDate);
 
     if (it == dataBase.begin() && (it->first != formatedDate))
-        throw std::runtime_error("Invalid date (bitcoin didn't exist yet).");
+        throw std::runtime_error("Invalid date (bitcoin didn't exist yet): " + date);
     
     if (it == dataBase.end() || (it->first != formatedDate)) {
         it--;
@@ -87,8 +91,8 @@ double BitcoinExchange::getValue(std::map<std::string, double>& dataBase, std::s
     return it->second;
 };
 
-std::map<std::string, double> BitcoinExchange::getData() {
-    std::map<std::string, double> dataBase;
+std::map<time_t, double> BitcoinExchange::getData() {
+    std::map<time_t, double> dataBase;
     std::ifstream dataBaseFile("data.csv");
     std::string buffer;
 
@@ -113,13 +117,13 @@ std::map<std::string, double> BitcoinExchange::getData() {
 
         isDate(row[0]);
         isNumber(row[1], 0);
-        dataBase[row[0]] = std::strtod(row[1].c_str(), NULL);
+        dataBase[DateToTimeT(row[0])] = std::strtod(row[1].c_str(), NULL);
     }
     return dataBase;
 };
 
 void BitcoinExchange::ShowValues(std::string fileName) {
-    std::map<std::string, double> dataBase = getData();
+    std::map<time_t, double> dataBase = getData();
     std::ifstream inputFile(fileName);
     std::string buffer;
 

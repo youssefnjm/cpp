@@ -1,5 +1,4 @@
 #include "BitcoinExchange.hpp"
-#include <stdexcept>
 
 int main (int ac, char **av)
 {
@@ -9,7 +8,6 @@ int main (int ac, char **av)
             throw std::runtime_error("Error: unvalid argument number");
 
         BitcoinExchange main;
-
         main.ShowValues(av[1]);
     
     } catch (std::exception &exp) {

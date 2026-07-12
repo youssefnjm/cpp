@@ -7,11 +7,11 @@ class BitcoinExchange
 {
     private:
         void ft_strtrim(std::string& str, char del);
-        bool isLeapYear(int year);
         void isDate(std::string& date);
         void isNumber(std::string& val, int flag);
-        double getValue(std::map<std::string, double>& dataBase, std::string &date);
-        std::map<std::string, double> getData();
+        double getValue(std::map<time_t, double>& dataBase, std::string &date);
+        std::map<time_t, double> getData();
+        time_t DateToTimeT(std::string Sdate);
 
     public:
         BitcoinExchange(void);
